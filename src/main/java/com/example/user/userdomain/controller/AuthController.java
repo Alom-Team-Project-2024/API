@@ -1,19 +1,13 @@
 package com.example.user.userdomain.controller;
 
 import com.example.user.userdomain.dto.AuthUserDTO;
-import com.example.user.userdomain.dto.JWTResponse;
 import com.example.user.userdomain.dto.UserInfoUpdateRequest;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.jwt.JWTUtil;
-import com.example.user.userdomain.repository.UserRepository;
 import com.example.user.userdomain.service.SejongAuthService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/users")
 public class AuthController {
@@ -39,9 +33,4 @@ public class AuthController {
         response.addHeader("Authorization", "Bearer " + token);
     }
 
-    /* 닉네임 변경 */
-    @PatchMapping("")
-    public void editNickname(@RequestBody UserInfoUpdateRequest userInfoUpdateRequest) {
-        sejongAuthService.changeNickname(userInfoUpdateRequest);
-    }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * 프론트에서 세종대 인증 API를 통해 로그인 구현 코드 작성
@@ -43,6 +44,7 @@ public class SejongAuthService {
                     .registrationStatus(authUserDTO.getRegistrationStatus())
                     .role(Role.USER)
                     .point(36.5)
+                    .profileImage("/uploads/default_profile.png")
                     .build();
             userRepository.save(user);
             log.info(user.getUsername());
@@ -50,22 +52,5 @@ public class SejongAuthService {
             return user;
         }
         return userRepository.findByUsername(authUserDTO.getUsername());
-    }
-
-    /* 닉네임 변경 */
-    @Transactional
-    public void changeNickname(UserInfoUpdateRequest userInfoUpdateRequest) {
-        User user = userRepository.findByUsername(userInfoUpdateRequest.getUsername());
-        String newNickname = userInfoUpdateRequest.getNickname();
-
-        if (userRepository.existsByNickname(newNickname)) {
-            log.info("이미 사용중인 닉네임입니다.");
-        } else {
-            log.info("현재 user는 " + user.getUsername() + " 입니다.");
-            log.info("닉네임이 " + newNickname + " 으로 변경되었습니다.");
-            user.changeNickname(newNickname);
-
-            log.info("현재 user의 닉네임은 " + userRepository.findByUsername("22011315").getNickname() + " 입니다.");
-        }
     }
 }
