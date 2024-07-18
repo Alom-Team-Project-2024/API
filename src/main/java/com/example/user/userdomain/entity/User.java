@@ -3,11 +3,7 @@ package com.example.user.userdomain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,7 +15,7 @@ import java.time.LocalDateTime;
         @UniqueConstraint(columnNames = "nickname")
 })
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -62,16 +58,6 @@ public class User {
     @Column(nullable = false)
     @ColumnDefault("36.5")
     private double point;
-
-    /* 가입 날짜 */
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreatedDate
-    private LocalDateTime createAt;
-
-    /* 수정 날짜 */
-    @Column(name = "modified_at")
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
 
     public void changeNickname(String nickname) {
         this.nickname = nickname;

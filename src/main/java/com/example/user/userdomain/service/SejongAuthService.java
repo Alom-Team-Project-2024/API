@@ -43,8 +43,6 @@ public class SejongAuthService {
                     .registrationStatus(authUserDTO.getRegistrationStatus())
                     .role(Role.USER)
                     .point(36.5)
-                    .createAt(LocalDateTime.now())
-                    .modifiedAt(LocalDateTime.now())
                     .build();
             userRepository.save(user);
             log.info(user.getUsername());
