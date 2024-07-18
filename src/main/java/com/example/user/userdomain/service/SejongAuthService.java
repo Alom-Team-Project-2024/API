@@ -1,6 +1,7 @@
 package com.example.user.userdomain.service;
 
 import com.example.user.userdomain.dto.AuthUserDTO;
+import com.example.user.userdomain.dto.UserInfoUpdateRequest;
 import com.example.user.userdomain.entity.Role;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.repository.UserRepository;
@@ -35,7 +36,7 @@ public class SejongAuthService {
             User user = User.builder()
                     .username(authUserDTO.getUsername())
                     .name(authUserDTO.getName())
-                    .nickname("user" + (int)(Math.random() * 1000))
+                    .nickname("user" + (int) (Math.random() * 1000))
                     .major(authUserDTO.getMajor())
                     .studentGrade(authUserDTO.getStudentGrade())
                     .studentCode(Integer.parseInt(authUserDTO.getUsername().substring(0, 2)))
@@ -53,4 +54,20 @@ public class SejongAuthService {
         return userRepository.findByUsername(authUserDTO.getUsername());
     }
 
+    /* 닉네임 변경 */
+    @Transactional
+    public void changeNickname(UserInfoUpdateRequest userInfoUpdateRequest) {
+        User user = userRepository.findByUsername(userInfoUpdateRequest.getUsername());
+        String newNickname = userInfoUpdateRequest.getNickname();
+
+        if (userRepository.existsByNickname(newNickname)) {
+            log.info("이미 사용중인 닉네임입니다.");
+        } else {
+            log.info("현재 user는 " + user.getUsername() + " 입니다.");
+            log.info("닉네임이 " + newNickname + " 으로 변경되었습니다.");
+            user.changeNickname(newNickname);
+
+            log.info("현재 user의 닉네임은 " + userRepository.findByUsername("22011315").getNickname() + " 입니다.");
+        }
+    }
 }

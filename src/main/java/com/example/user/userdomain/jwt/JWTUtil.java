@@ -47,10 +47,11 @@ public class JWTUtil {
     }
 
     /* AccessToken 발급 */
-    public String createAccessToken(String username, Enum<Role> role) {
+    public String createAccessToken(String username, String nickname, Enum<Role> role) {
         return Jwts.builder()
                 .claim("username", username)
                 .claim("role", role)
+                .claim("nickname", nickname)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + accessTokenValidity))
                 .signWith(secretKey)

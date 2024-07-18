@@ -72,4 +72,8 @@ public class User {
     @Column(name = "modified_at")
     @LastModifiedDate
     private LocalDateTime modifiedAt;
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
