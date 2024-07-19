@@ -1,6 +1,5 @@
 package com.example.user.userdomain.dto;
 
-import com.example.user.userdomain.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

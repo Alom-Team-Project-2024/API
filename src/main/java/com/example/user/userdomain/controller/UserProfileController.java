@@ -33,16 +33,10 @@ public class UserProfileController {
 
     /* 프로필 사진 확인 */
     @GetMapping("/{username}/profile-image")
-    public ResponseEntity<Resource> getProfileImage(@PathVariable("username") String username) {
-        Resource resource = userProfileService.getUserProfileImage(username);
+    public ResponseEntity<String> getProfileImage(@PathVariable("username") String username) {
+        String userProfileImage = userProfileService.getUserProfileImage(username);
 
-        if (!resource.exists()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(resource);
+        return ResponseEntity.ok(userProfileImage);
     }
 
 

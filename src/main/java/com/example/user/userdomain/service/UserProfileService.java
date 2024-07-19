@@ -66,12 +66,10 @@ public class UserProfileService {
     }
 
     /* 프로필 확인 */
-    public Resource getUserProfileImage(String username) {
+    public String getUserProfileImage(String username) {
         log.info("프로필 확인 서비스");
         User user = userRepository.findByUsername(username);
-        String fileName = user.getProfileImage();
-        Path filePath = Paths.get(uploadDir).resolve(fileName).normalize();
 
-        return new FileSystemResource(filePath.toFile());
+        return user.getProfileImage();
     }
 }
