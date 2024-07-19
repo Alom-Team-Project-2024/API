@@ -5,6 +5,7 @@ import com.example.user.userdomain.dto.UserInfoUpdateRequest;
 import com.example.user.userdomain.entity.Role;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +22,10 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SejongAuthService {
 
     private final UserRepository userRepository;
-
-    public SejongAuthService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     /* 프론트에서 넘어온 유저 데이터 DB에 저장 */
     @Transactional
@@ -44,13 +42,13 @@ public class SejongAuthService {
                     .registrationStatus(authUserDTO.getRegistrationStatus())
                     .role(Role.USER)
                     .point(36.5)
-                    .profileImage("/uploads/default_profile.png")
                     .build();
             userRepository.save(user);
-            log.info(user.getUsername());
 
             return user;
         }
         return userRepository.findByUsername(authUserDTO.getUsername());
     }
+
+
 }

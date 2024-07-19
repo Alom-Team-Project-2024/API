@@ -3,38 +3,24 @@ package com.example.user.userdomain.controller;
 import com.example.user.userdomain.dto.UserInfoUpdateRequest;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.repository.UserRepository;
+import com.example.user.userdomain.service.SejongAuthService;
 import com.example.user.userdomain.service.UserProfileService;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
-
+@Slf4j
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserProfileController {
 
-    private final UserRepository userRepository;
     private final UserProfileService userProfileService;
-
-    public UserProfileController(UserRepository userRepository, UserProfileService userProfileService) {
-        this.userRepository = userRepository;
-        this.userProfileService = userProfileService;
-    }
-
-    @Value("${file.upload-dir}")
-    private String uploadDir;
 
     /* 닉네임 변경 */
     @PatchMapping("")
@@ -43,5 +29,27 @@ public class UserProfileController {
             return "닉네임이 " + userInfoUpdateRequest.getNickname() + " 으로 변경되었습니다.";
         }
         return "이미 존재하는 닉네임입니다.";
+    }
+
+    /* 프로필 사진 확인 */
+    @GetMapping("/{username}/profile-image")
+    public ResponseEntity<Resource> getProfileImage(@PathVariable("username") String username) {
+        Resource resource = userProfileService.getUserProfileImage(username);
+
+        if (!resource.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(resource);
+    }
+
+
+    /* 프로필 사진 변경 */
+    @PostMapping("/{username}/profile-image")
+    public ResponseEntity<String> changeProfileImage(@PathVariable("username") String username, @RequestParam("file") MultipartFile file) {
+        String imageUrl = userProfileService.uploadProfileImage(username, file);
+        return ResponseEntity.ok(imageUrl);
     }
 }

@@ -31,9 +31,14 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
     }
 
+    /* token에서 nickname 꺼내기 */
+    public String getNickname(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("nickname", String.class);
+    }
+
     /* token에서 role 꺼내기 */
-    public Role getRole(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", Role.class);
+    public String getRole(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
 
     /* token 만료시간 확인 */
@@ -50,7 +55,7 @@ public class JWTUtil {
     public String createAccessToken(String username, String nickname, Enum<Role> role) {
         return Jwts.builder()
                 .claim("username", username)
-                .claim("role", role)
+                .claim("role", role.name())
                 .claim("nickname", nickname)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + accessTokenValidity))

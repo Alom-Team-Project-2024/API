@@ -2,9 +2,11 @@ package com.example.user.userdomain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Slf4j
 @Entity
 @Getter
 @Builder
@@ -65,5 +67,17 @@ public class User extends BaseTimeEntity {
 
     public void changeNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    @PrePersist
+    public void setDefaultProfileImage() {
+        if (this.profileImage == null || this.profileImage.isEmpty()) {
+            this.profileImage = "/static/images/default_profile.png";
+            log.info("유저 생성시 기본 프로필이 적용되었습니다.");
+        }
+    }
+
+    public void changeProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

@@ -16,17 +16,17 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AuthUserDTO {
     /* 아이디 */
-    private String username; // 22011315
+    private String username;
 
     /* 이름 (실명) */
-    private String name; // 백지훈
+    private String name;
 
     /* 학과 */
-    private String major; // 컴퓨터공학과
+    private String major;
 
     /* 학년 */
-    private int studentGrade; // 2
+    private int studentGrade;
 
     /* 재학/휴학/졸업 상태 */
-    private RegistrationStatus registrationStatus; //
+    private RegistrationStatus registrationStatus;
 }
