@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.FetchType.*;
@@ -36,9 +37,9 @@ public class QuestionReply {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "reply")
-    private List<ReplyImage> images;
+    private List<ReplyImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "reply")
-    private List<ReplyComment> comments;
+    private List<ReplyComment> comments = new ArrayList<>();
 
 }

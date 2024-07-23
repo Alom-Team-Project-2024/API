@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.FetchType.*;
@@ -41,9 +42,9 @@ public class QuestionPost {
     private int field2;
 
     @OneToMany(mappedBy = "post")
-    private List<PostImage> images;
+    private List<PostImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
-    private List<QuestionReply> replies;
+    private List<QuestionReply> replies = new ArrayList<>();
 
 }
