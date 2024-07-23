@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jdk.jfr.Category;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -34,6 +35,7 @@ public class TutorPost {
 
     private String major;
 
+    @ColumnDefault("0")
     private int like;
 
     @Column(name = "created_at")
