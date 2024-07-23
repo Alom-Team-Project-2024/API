@@ -13,7 +13,7 @@ import static jakarta.persistence.GenerationType.*;
 @Getter @Setter
 public class ReplyImage {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
     @ManyToOne(fetch = LAZY)
