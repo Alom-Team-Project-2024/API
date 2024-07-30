@@ -17,7 +17,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         @UniqueConstraint(columnNames = "nickname")
 })
 @EntityListeners(AuditingEntityListener.class)
-public class User extends BaseTimeEntity {
+public class User extends UserBaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
