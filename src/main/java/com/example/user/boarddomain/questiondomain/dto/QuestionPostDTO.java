@@ -1,6 +1,5 @@
 package com.example.user.boarddomain.questiondomain.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
