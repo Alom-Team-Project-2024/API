@@ -18,7 +18,7 @@ public class QuestionPostImage extends QuestionPostImageBaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "post_id")
     private QuestionPost questionPost;
 

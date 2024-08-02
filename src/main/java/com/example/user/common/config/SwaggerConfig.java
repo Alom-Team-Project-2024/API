@@ -17,7 +17,7 @@ import java.util.List;
                 description = "다함께 만들어가는 세종대학교 지식창고",
                 version = "0.1v"),
         servers = {
-                @Server(url = "http://43.203.19.121:8080", description = "Main Server"),
+                @Server(url = "http://15.165.213.186:8080", description = "Main Server"),
                 @Server(url = "http://localhost:8080", description = "Local Server")
         }
 )
@@ -45,7 +45,7 @@ public class SwaggerConfig {
                                 .url("http://localhost:8080")
                                 .description("Local Server"),
                         new io.swagger.v3.oas.models.servers.Server()
-                                .url("http://43.203.19.121:8080")
+                                .url("http://15.165.213.186:8080")
                                 .description("Main Server")
                 ));
     }

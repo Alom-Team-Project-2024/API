@@ -4,12 +4,12 @@ import com.example.user.boarddomain.questiondomain.dto.QuestionPostDTO;
 import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
 import com.example.user.boarddomain.questiondomain.repository.QuestionPostRepository;
 import com.example.user.boarddomain.questiondomain.service.QuestionPostService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/question_post")
@@ -31,7 +31,13 @@ public class QuestionPostController {
     /* 글 작성 */
     @PostMapping("")
     public void post(@RequestBody QuestionPostDTO questionPostDTO) {
-        questionPostService.post(questionPostDTO);
+        questionPostService.savePost(questionPostDTO);
+    }
+
+    /* 특정 글 조회 */
+    @GetMapping("/{post_id}")
+    public Optional<QuestionPost> getPost(@PathVariable("post_id") long id) {
+        return questionPostRepository.findById(id);
     }
 
 
