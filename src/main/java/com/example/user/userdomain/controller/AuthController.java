@@ -5,6 +5,13 @@ import com.example.user.userdomain.dto.UserInfoUpdateRequest;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.jwt.JWTUtil;
 import com.example.user.userdomain.service.SejongAuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Tag(name = "login-controller", description = "로그인 API")
 public class AuthController {
 
     private final JWTUtil jwtUtil;
@@ -22,6 +30,7 @@ public class AuthController {
      * /users/login post 요청시 http body에 있는 user data를 통해 token 발급
      */
     @PostMapping("/login")
+    @Operation(summary = "로그인", description = "세종대 인증을 받은 사용자 로그인")
     public void login(@RequestBody AuthUserDTO authUserDTO, HttpServletResponse response) {
         User findUser = sejongAuthService.saveUser(authUserDTO);
 
