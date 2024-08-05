@@ -17,6 +17,7 @@ import static jakarta.persistence.GenerationType.*;
 public class QuestionReply {
     @Id
     @GeneratedValue(strategy = AUTO)
+    @Column(name = "reply_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
@@ -36,10 +37,10 @@ public class QuestionReply {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "reply")
+    @OneToMany(mappedBy = "reply", cascade = CascadeType.REMOVE)
     private List<ReplyImage> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reply")
+    @OneToMany(mappedBy = "reply", cascade = CascadeType.REMOVE)
     private List<ReplyComment> comments = new ArrayList<>();
 
 }

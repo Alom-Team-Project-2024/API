@@ -13,7 +13,7 @@ import static jakarta.persistence.GenerationType.*;
 public class PostImage {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "postimage_id")
+    @Column(name = "postImage_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)

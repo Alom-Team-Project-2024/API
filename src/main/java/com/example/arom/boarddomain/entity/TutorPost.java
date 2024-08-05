@@ -16,7 +16,7 @@ import static jakarta.persistence.FetchType.*;
 public class TutorPost {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "tutorpost_id")
+    @Column(name = "tutor_post_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
@@ -24,7 +24,7 @@ public class TutorPost {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private CategoryStatus category;
 
     private String title;
 

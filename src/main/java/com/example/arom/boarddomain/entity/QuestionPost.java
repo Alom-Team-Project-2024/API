@@ -37,14 +37,17 @@ public class QuestionPost {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "modified_at")
+    private LocalDateTime modifiedAt;
+
     private int field;
 
     private int field2;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<PostImage> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<QuestionReply> replies = new ArrayList<>();
 
 }

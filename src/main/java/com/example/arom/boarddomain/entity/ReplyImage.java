@@ -14,6 +14,7 @@ import static jakarta.persistence.GenerationType.*;
 public class ReplyImage {
     @Id
     @GeneratedValue(strategy = AUTO)
+    @Column(name = "reply_image_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)

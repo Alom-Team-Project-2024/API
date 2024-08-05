@@ -15,7 +15,7 @@ import static jakarta.persistence.GenerationType.*;
 public class ReplyComment {
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "replycomment_id")
+    @Column(name = "reply_comment_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
