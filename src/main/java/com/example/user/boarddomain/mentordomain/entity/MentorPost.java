@@ -1,4 +1,4 @@
-package com.example.user.boarddomain.tutordomain.entity;
+package com.example.user.boarddomain.mentordomain.entity;
 
 import com.example.user.userdomain.entity.User;
 import jakarta.persistence.*;
@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class TutorPost extends TutorBaseTimeEntity {
+public class MentorPost extends MentorBaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,10 +44,6 @@ public class TutorPost extends TutorBaseTimeEntity {
     /* 학과 */
     @Column(nullable = false)
     private String major;
-
-    /* 과목명 */
-    @Column(nullable = false)
-    private String subject;
 
     /* 좋아요 */
     @Column(nullable = false)

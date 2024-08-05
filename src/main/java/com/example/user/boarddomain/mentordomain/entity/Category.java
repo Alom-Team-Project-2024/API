@@ -1,4 +1,4 @@
-package com.example.user.boarddomain.tutordomain.entity;
+package com.example.user.boarddomain.mentordomain.entity;
 
 import lombok.AllArgsConstructor;
 

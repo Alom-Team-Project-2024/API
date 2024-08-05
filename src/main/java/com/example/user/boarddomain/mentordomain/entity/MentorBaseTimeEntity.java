@@ -1,4 +1,4 @@
-package com.example.user.boarddomain.tutordomain.entity;
+package com.example.user.boarddomain.mentordomain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public abstract class TutorBaseTimeEntity {
+public abstract class MentorBaseTimeEntity {
 
     /* 생성 날짜 */
     @CreatedDate
