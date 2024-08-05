@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,12 +32,14 @@ public class AuthController {
      */
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "세종대 인증을 받은 사용자 로그인")
-    public void login(@RequestBody AuthUserDTO authUserDTO, HttpServletResponse response) {
+    public AuthUserDTO login(@RequestBody AuthUserDTO authUserDTO, HttpServletResponse response) {
         User findUser = sejongAuthService.saveUser(authUserDTO);
 
         String token = jwtUtil.createAccessToken(findUser.getUsername(), findUser.getNickname(), findUser.getRole());
 
         response.addHeader("Authorization", "Bearer " + token);
+
+        return authUserDTO;
     }
 
 }

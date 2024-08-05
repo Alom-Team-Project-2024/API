@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/question_post")
 @AllArgsConstructor
-@Tag(name = "reply-controller", description = "답변 API")
+@Tag(name = "reply-controller", description = "질문 게시판 답변 API")
 public class ReplyController {
 
     private final ReplyService replyService;
