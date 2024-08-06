@@ -56,4 +56,8 @@ public class QuestionPost extends QuestionPostBaseTimeEntity {
     /* 글 답변 */
     @OneToMany(mappedBy = "questionPost")
     private List<Reply> replies = new ArrayList<>();
+
+    /* 업로드 된 이미지 */
+    @OneToMany(mappedBy = "questionPost")
+    private List<QuestionPostImage> images = new ArrayList<>();
 }

@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -15,7 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Reply extends ReplyBaseTimeEntity{
+public class Reply extends ReplyBaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,4 +42,8 @@ public class Reply extends ReplyBaseTimeEntity{
     /* 답변 좋아요 */
     @ColumnDefault("0")
     private int likes;
+
+    /* 답변 이미지 */
+    @OneToMany(mappedBy = "reply")
+    private List<ReplyImage> images = new ArrayList<>();
 }

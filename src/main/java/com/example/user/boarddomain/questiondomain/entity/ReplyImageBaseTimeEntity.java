@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public abstract class QuestionPostImageBaseTimeEntity {
+public abstract class ReplyImageBaseTimeEntity {
 
     /* 생성 날짜 */
     @CreatedDate

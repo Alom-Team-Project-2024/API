@@ -52,7 +52,7 @@ public class UserProfileController {
     /* 프로필 사진 변경 */
     @Operation(summary = "프로필 사진 변경", description = "새로운 프로필 사진으로 변경")
     @Parameter(name = "username", description = "학번")
-    @PostMapping("/{username}/profile-image")
+    @PostMapping(value = "/{username}/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> changeProfileImage(@PathVariable("username") String username, @RequestParam("file") MultipartFile file) {
         String imageUrl = userProfileService.uploadProfileImage(username, file);
         return ResponseEntity.ok(imageUrl);

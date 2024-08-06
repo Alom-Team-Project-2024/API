@@ -17,7 +17,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/question_post")
 @AllArgsConstructor
-@Tag(name = "question-post-controllere", description = "질문게시판 API")
+@Tag(name = "question-post-controller", description = "질문게시판 API")
 public class QuestionPostController {
 
     private final QuestionPostService questionPostService;

@@ -34,7 +34,7 @@ public class SubjectController {
 
     /* DB에서 검색 시 입력된 검색어과 비슷한 과목명 리스트 반환 */
     @Operation(summary = "유사 과목명 조회", description = "사용자로부터 입력된 검색어를 포함하는 모든 과목명 List 조회")
-    @GetMapping("/subject/query/{query}")
+    @GetMapping("/subjects/query/{query}")
     public List<Subject> getSimilarString(@PathVariable("query") String query) {
         return subjectService.getSimilarSubject(query);
     }

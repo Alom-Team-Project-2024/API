@@ -1,6 +1,5 @@
 package com.example.user.boarddomain.questiondomain.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -13,15 +12,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class QuestionPostImage extends QuestionPostImageBaseTimeEntity{
+public class ReplyImage extends ReplyBaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private QuestionPost questionPost;
+    private Reply reply;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
