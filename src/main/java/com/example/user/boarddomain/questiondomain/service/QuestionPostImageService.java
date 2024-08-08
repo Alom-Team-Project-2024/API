@@ -40,7 +40,7 @@ public class QuestionPostImageService {
                 .imageUrl(file.getOriginalFilename())
                 .build();
 
-        return questionPostImage;
+        return questionPostImageRepository.save(questionPostImage);
     }
 
     /* 질문 게시글에 등록된 이미지 조회 */

@@ -4,8 +4,6 @@ import com.example.user.boarddomain.questiondomain.entity.QuestionPostImage;
 import com.example.user.boarddomain.questiondomain.service.QuestionPostImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -19,7 +17,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/question_post")
-@Tag(name = "question-post-image-controller", description = "질문 게시판 이미지 API")
+@Tag(name = "Question-Post", description = "질문 게시판 이미지 API")
 public class QuestionPostImageController {
 
     private final QuestionPostImageService questionPostImageService;
@@ -28,10 +26,10 @@ public class QuestionPostImageController {
     @Operation(summary = "질문 게시판 이미지 등록", description = "질문 게시글에 이미지를 등록합니다.")
     @Parameter(name = "post_id", description = "질문 게시글 Id")
     @PostMapping(value = "/{post_id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<QuestionPostImage> uploadImages(@PathVariable("post_id") Long id, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadImages(@PathVariable("post_id") Long id, @RequestParam("file") MultipartFile file) {
         try {
             QuestionPostImage questionPostImage = questionPostImageService.saveImage(file, id);
-            return ResponseEntity.ok(questionPostImage);
+            return ResponseEntity.ok("이미지 업로드 성공");
         } catch (IOException e) {
             return ResponseEntity.status(500).build();
         }

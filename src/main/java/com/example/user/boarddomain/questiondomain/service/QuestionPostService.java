@@ -21,7 +21,7 @@ public class QuestionPostService {
 
     /* 게시물 등록 */
     @Transactional
-    public void savePost(QuestionPostDTO questionPostDTO) {
+    public QuestionPost savePost(QuestionPostDTO questionPostDTO) {
         // 세션에서 현재 사용자 확인
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsername(username);
@@ -35,7 +35,7 @@ public class QuestionPostService {
                 .writer(username)
                 .build();
 
-        questionPostRepository.save(questionPost);
+        return questionPostRepository.save(questionPost);
     }
 
 }

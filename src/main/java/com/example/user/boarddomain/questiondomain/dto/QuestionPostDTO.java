@@ -1,9 +1,14 @@
 package com.example.user.boarddomain.questiondomain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
+@Builder
 public class QuestionPostDTO {
 
     /* 수업 명 */

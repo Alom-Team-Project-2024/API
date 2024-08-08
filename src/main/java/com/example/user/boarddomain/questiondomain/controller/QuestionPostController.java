@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,26 +18,20 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/question_post")
 @AllArgsConstructor
-@Tag(name = "question-post-controller", description = "질문게시판 API")
+@Tag(name = "Question-Post", description = "질문게시판 API")
 public class QuestionPostController {
 
     private final QuestionPostService questionPostService;
     private final QuestionPostRepository questionPostRepository;
 
-    /**
-     * JSON 형식으로 HTTP body에 제목, 본문 데이터가 넘어옴
-     * {
-     * "subject" : "글 제목",
-     * "text" : "본문"
-     * }
-     * 서버에서는 body에 있는 데이터를 통해 게시글 작성
-     * 작성자는 QuestionPostService에서 현재 세션에 등록된 사용자를 통해 확인
-     */
     /* 글 작성 */
-    @Operation(summary = "질문 게시판 글 등록", description = "과목명 (subject), 본문 (text)를 작성하여 질문 게시판에 새로운 글을 등록합니다.")
+    @Operation(summary = "질문 게시판 글 등록", description = "과목명 (subject), 본문 (text)를 작성하여 질문 게시판에 새로운 글을 등록합니다. 작성 글의 id 값을 반환합니다.")
     @PostMapping("")
-    public void post(@RequestBody QuestionPostDTO questionPostDTO) {
-        questionPostService.savePost(questionPostDTO);
+    public ResponseEntity<Long> post(@RequestBody QuestionPostDTO questionPostDTO) {
+
+        QuestionPost questionPost = questionPostService.savePost(questionPostDTO);
+
+        return ResponseEntity.ok(questionPost.getId());
     }
 
     /* 특정 글 조회 */

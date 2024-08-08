@@ -27,6 +27,7 @@ public class ReplyImageService {
     private String uploadDir;
 
     private final ReplyRepository replyRepository;
+    private final ReplyImageRepository replyImageRepository;
 
     /* 답변 이미지 등록 로직 */
     public ReplyImage saveImage(MultipartFile file, Long id) throws IOException {
@@ -40,7 +41,7 @@ public class ReplyImageService {
                 .imageUrl(file.getOriginalFilename())
                 .build();
 
-        return replyImage;
+        return replyImageRepository.save(replyImage);
     }
 
     /* 답변 이미지 조회 로직 */

@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/question_post")
 @AllArgsConstructor
-@Tag(name = "reply-image-controller", description = "질문 게시글 답변 이미지 API")
+@Tag(name = "Reply")
 public class ReplyImageController {
 
     private final ReplyImageService replyImageService;
@@ -26,10 +26,10 @@ public class ReplyImageController {
     @Operation(summary = "답변 이미지 등록", description = "질문 게시글 답변 이미지를 등록합니다.")
     @Parameter(name = "post_id", description = "질문 게시글 Id")
     @PostMapping(value = "/{post_id}/reply/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ReplyImage> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable("post_id") Long id) {
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable("post_id") Long id) {
         try {
             ReplyImage replyImage = replyImageService.saveImage(file, id);
-            return ResponseEntity.ok(replyImage);
+            return ResponseEntity.ok("이미지 업로드 성공");
         } catch (IOException e) {
             return ResponseEntity.status(500).build();
         }

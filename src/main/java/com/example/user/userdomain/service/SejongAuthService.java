@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,6 +28,7 @@ public class SejongAuthService {
 
     private final UserRepository userRepository;
 
+    /* 로그인 로직 */
     /* 프론트에서 넘어온 유저 데이터 DB에 저장 */
     @Transactional
     public User saveUser(AuthUserDTO authUserDTO) {
@@ -48,6 +50,18 @@ public class SejongAuthService {
             return user;
         }
         return userRepository.findByUsername(authUserDTO.getUsername());
+    }
+
+    /* 특정 유저 조회 로직 */
+    @Transactional
+    public User findUser(Long id) {
+        return userRepository.findById(id).orElseThrow();
+    }
+
+    /* 모든 유저 조회 로직 */
+    @Transactional
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 
 

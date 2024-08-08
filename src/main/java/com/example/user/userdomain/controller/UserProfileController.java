@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@Tag(name = "user-profile-controller", description = "회원정보 수정 API")
+@Tag(name = "User", description = "회원 API")
 public class UserProfileController {
 
     private final UserProfileService userProfileService;

@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@Tag(name = "subject-controller", description = "개설과목 조회 API")
+@Tag(name = "Subject", description = "과목 API")
 public class SubjectController {
 
     private final SubjectService subjectService;

@@ -1,6 +1,7 @@
 package com.example.user.boarddomain.questiondomain.entity;
 
 import com.example.user.userdomain.entity.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;

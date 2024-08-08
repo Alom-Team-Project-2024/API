@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/mentor_post")
 @AllArgsConstructor
-@Tag(name = "mentor_post_controller", description = "구인게시판 API")
+@Tag(name = "Mentor-Post", description = "구인게시판 API")
 public class MentorPostController {
 
     private final MentorPostService mentorPostService;
