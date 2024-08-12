@@ -22,7 +22,7 @@ public class ChatRoom extends ChatRoomBaseTimeEntity {
 
     /* 방 이름 */
     @Column(nullable = false)
-    private String name;
+    private String chatRoomName;
 
     /* User와 다대다 매핑 -> UserChatRoom과 일대다 매칭 */
     @OneToMany(mappedBy = "chatRoom")

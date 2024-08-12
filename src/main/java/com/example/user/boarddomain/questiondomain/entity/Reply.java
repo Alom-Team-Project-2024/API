@@ -23,7 +23,7 @@ public class Reply extends ReplyBaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private QuestionPost questionPost;
 
@@ -45,5 +45,5 @@ public class Reply extends ReplyBaseTimeEntity {
 
     /* 답변 이미지 */
     @OneToMany(mappedBy = "reply")
-    private List<ReplyImage> images = new ArrayList<>();
+    private List<ReplyImage> images;
 }

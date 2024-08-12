@@ -1,8 +1,6 @@
 package com.example.user.chatdomain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -24,4 +22,19 @@ public abstract class ChatMessageBaseTimeEntity {
     @LastModifiedDate
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.createdAt = truncateToSeconds(this.createdAt);
+        this.modifiedAt = createdAt;
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.modifiedAt = truncateToSeconds(this.modifiedAt);
+    }
+
+    private LocalDateTime truncateToSeconds(LocalDateTime dateTime) {
+        return dateTime.withNano(0);
+    }
 }

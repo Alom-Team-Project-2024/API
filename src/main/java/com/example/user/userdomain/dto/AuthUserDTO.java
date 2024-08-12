@@ -17,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+@Builder
 @Schema(description = "로그인 JSON")
 public class AuthUserDTO {
     /* 아이디 */

@@ -2,6 +2,7 @@ package com.example.user.userdomain.controller;
 
 import com.example.user.userdomain.dto.AuthUserDTO;
 import com.example.user.userdomain.dto.UserInfoUpdateRequest;
+import com.example.user.userdomain.dto.UserResponse;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.jwt.JWTUtil;
 import com.example.user.userdomain.service.SejongAuthService;
@@ -48,14 +49,14 @@ public class AuthController {
     /* 유저 정보 조회 */
     @Operation(summary = "유저 조회", description = "유저 id값을 통해 특정 유저 정보를 조회합니다.")
     @GetMapping("/{id}")
-    public User findUser(@PathVariable("id") Long id) {
+    public UserResponse findUser(@PathVariable("id") Long id) {
         return sejongAuthService.findUser(id);
     }
 
     /* 가입된 모든 유저 조회 */
     @Operation(summary = "모든 유저 조회", description = "가입된 모든 유저를 조회합니다.")
     @GetMapping("/all")
-    public List<User> findAllUsers() {
+    public List<UserResponse> findAllUsers() {
         return sejongAuthService.findAllUsers();
     }
 }

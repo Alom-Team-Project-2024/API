@@ -18,7 +18,7 @@ public class ReplyImage extends ReplyBaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Reply reply;
 

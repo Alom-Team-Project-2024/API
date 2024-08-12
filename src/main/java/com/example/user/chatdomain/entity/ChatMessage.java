@@ -4,10 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Slf4j
-@Document
+@Entity
 @Getter
 @Builder
 @AllArgsConstructor
@@ -17,11 +16,13 @@ public class ChatMessage extends ChatMessageBaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
 
+    /* 채팅방 정보 */
     private String chatRoomId;
 
-    private String userId;
+    /* 보내는 사람 */
+    private String sender;
 
     /* 메시지 내용 */
     private String message;

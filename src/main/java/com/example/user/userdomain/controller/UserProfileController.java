@@ -44,7 +44,6 @@ public class UserProfileController {
     @GetMapping("/{username}/profile-image")
     public ResponseEntity<String> getProfileImage(@PathVariable("username") String username) {
         String userProfileImage = userProfileService.getUserProfileImage(username);
-
         return ResponseEntity.ok(userProfileImage);
     }
 

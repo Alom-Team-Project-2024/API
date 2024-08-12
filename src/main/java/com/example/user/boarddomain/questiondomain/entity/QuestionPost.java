@@ -24,7 +24,7 @@ public class QuestionPost extends QuestionPostBaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -56,9 +56,9 @@ public class QuestionPost extends QuestionPostBaseTimeEntity {
 
     /* 글 답변 */
     @OneToMany(mappedBy = "questionPost")
-    private List<Reply> replies = new ArrayList<>();
+    private List<Reply> replies;
 
     /* 업로드 된 이미지 */
     @OneToMany(mappedBy = "questionPost")
-    private List<QuestionPostImage> images = new ArrayList<>();
+    private List<QuestionPostImage> images;
 }

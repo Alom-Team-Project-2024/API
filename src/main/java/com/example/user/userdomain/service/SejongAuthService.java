@@ -1,7 +1,10 @@
 package com.example.user.userdomain.service;
 
+import com.example.user.chatdomain.dto.UserChatRoomDTO;
+import com.example.user.chatdomain.entity.UserChatRoom;
 import com.example.user.userdomain.dto.AuthUserDTO;
 import com.example.user.userdomain.dto.UserInfoUpdateRequest;
+import com.example.user.userdomain.dto.UserResponse;
 import com.example.user.userdomain.entity.Role;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.repository.UserRepository;
@@ -15,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 프론트에서 세종대 인증 API를 통해 로그인 구현 코드 작성
@@ -54,15 +59,25 @@ public class SejongAuthService {
 
     /* 특정 유저 조회 로직 */
     @Transactional
-    public User findUser(Long id) {
-        return userRepository.findById(id).orElseThrow();
+    public UserResponse findUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+
+        return getUserResponse(user);
+    }
+
+    /* User 객체를 UserResponse 객체로 변환하는 메서드 */
+    private UserResponse getUserResponse(User user) {
+
+        return new UserResponse(user.getUsername(), user.getName(), user.getNickname(), user.getProfileImage(), user.getMajor(), user.getStudentCode(), user.getStudentGrade(), user.getRegistrationStatus(), user.getRole(), user.getPoint());
     }
 
     /* 모든 유저 조회 로직 */
     @Transactional
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> findAllUsers() {
+        List<User> userList = userRepository.findAll();
+
+        return userList.stream()
+                .map(this::getUserResponse)
+                .collect(Collectors.toList());
     }
-
-
 }
