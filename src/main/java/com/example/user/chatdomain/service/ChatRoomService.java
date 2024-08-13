@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,14 @@ public class ChatRoomService {
     public ChatRoomDTO getChatRoomByName(String name) {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByChatRoomName(name).orElseThrow();
         return new ChatRoomDTO(chatRoom.getChatRoomName());
+    }
+
+    /* 특정 유저가 참여중인 모든 채팅방 조회 로직 */
+    public List<ChatRoomDTO> findRoomsByChatRoomName(String nickname) {
+
+        return chatRoomRepository.findAllByChatRoomName(nickname).stream()
+                .map(chatRoom -> new ChatRoomDTO(chatRoom.getChatRoomName()))
+                .collect(Collectors.toList());
     }
 
     /* 새로운 채팅방 만들기 */

@@ -1,29 +1,21 @@
 package com.example.user.boarddomain.questiondomain.service;
 
 import com.example.user.boarddomain.questiondomain.dto.ReplyDTO;
+import com.example.user.boarddomain.questiondomain.dto.ReplyImageDTO;
+import com.example.user.boarddomain.questiondomain.dto.ReplyResponse;
 import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
 import com.example.user.boarddomain.questiondomain.entity.Reply;
-import com.example.user.boarddomain.questiondomain.entity.ReplyImage;
 import com.example.user.boarddomain.questiondomain.repository.QuestionPostRepository;
 import com.example.user.boarddomain.questiondomain.repository.ReplyRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -50,8 +42,25 @@ public class ReplyService {
 
     /* 특정 글 모든 답변 return */
     @Transactional
-    public List<Reply> getAllReplies(Long post_id) {
-        QuestionPost questionPost = questionPostRepository.findById(post_id).orElseThrow(NullPointerException::new);
-        return questionPost.getReplies();
+    public List<ReplyResponse> getAllReplies(Long post_id) {
+        List<Reply> replies = questionPostRepository.findById(post_id).orElseThrow(NullPointerException::new).getReplies();
+
+        return replies.stream().map(this::convertToReplyResponse).collect(Collectors.toList());
+    }
+
+
+    private ReplyResponse convertToReplyResponse(Reply reply) {
+        // ReplyImage 리스트를 ReplyImageDTO 리스트로 변환
+        List<ReplyImageDTO> imageDTOS = reply.getImages().stream()
+                .map(image -> new ReplyImageDTO(image.getImageUrl()))
+                .collect(Collectors.toList());
+
+        return ReplyResponse.builder()
+                .title(reply.getTitle())
+                .text(reply.getText())
+                .writer(reply.getWriter())
+                .likes(reply.getLikes())
+                .images(imageDTOS)
+                .build();
     }
 }

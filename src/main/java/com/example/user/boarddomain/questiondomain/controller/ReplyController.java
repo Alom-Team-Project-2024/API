@@ -1,6 +1,7 @@
 package com.example.user.boarddomain.questiondomain.controller;
 
 import com.example.user.boarddomain.questiondomain.dto.ReplyDTO;
+import com.example.user.boarddomain.questiondomain.dto.ReplyResponse;
 import com.example.user.boarddomain.questiondomain.entity.Reply;
 import com.example.user.boarddomain.questiondomain.service.ReplyService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,11 +38,11 @@ public class ReplyController {
     }
 
 
-    /* 특정 글 모든 답변 return */
+    /* 특정 글 모든 답변 조회 */
     @Operation(summary = "답변 조회", description = "특정 질문글에 작성된 모든 답변을 조회합니다.")
     @Parameter(name = "post_id", description = "질문 게시글 Id")
     @GetMapping("/{post_id}/reply")
-    public List<Reply> getReplies(@PathVariable Long post_id) {
+    public List<ReplyResponse> getReplies(@PathVariable Long post_id) {
         return replyService.getAllReplies(post_id);
     }
 }

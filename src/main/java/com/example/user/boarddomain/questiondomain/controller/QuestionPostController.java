@@ -1,6 +1,7 @@
 package com.example.user.boarddomain.questiondomain.controller;
 
 import com.example.user.boarddomain.questiondomain.dto.QuestionPostDTO;
+import com.example.user.boarddomain.questiondomain.dto.QuestionPostResponse;
 import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
 import com.example.user.boarddomain.questiondomain.repository.QuestionPostRepository;
 import com.example.user.boarddomain.questiondomain.service.QuestionPostService;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/question_post")
@@ -39,8 +39,8 @@ public class QuestionPostController {
     @Parameter(name = "post_id", description = "질문 게시글 Id 값")
     @Transactional
     @GetMapping("/{post_id}")
-    public Optional<QuestionPost> getPost(@PathVariable("post_id") long id) {
-        return questionPostRepository.findById(id);
+    public QuestionPostResponse getPost(@PathVariable("post_id") long id) {
+        return questionPostService.findPost(id);
     }
 
 
@@ -48,8 +48,8 @@ public class QuestionPostController {
     @Operation(summary = "전체 글 조회", description = "작성된 모든 글을 확인합니다.")
     @Transactional
     @GetMapping("")
-    public List<QuestionPost> getAllPosts() {
-        return questionPostRepository.findAll();
+    public List<QuestionPostResponse> getAllPosts() {
+        return questionPostService.findAllPosts();
     }
 
     /* 작성자를 통한 글 조회 */
@@ -57,8 +57,8 @@ public class QuestionPostController {
     @Parameter(name = "username", description = "학번")
     @Transactional
     @GetMapping("username/{username}")
-    public List<QuestionPost> getPostsByUsername(@PathVariable("username") String username) {
-        return questionPostRepository.findAllByWriter(username);
+    public List<QuestionPostResponse> getPostsByUsername(@PathVariable("username") String username) {
+        return questionPostService.findPostsByUsername(username);
     }
 
     /* 수업명을 통한 글 조회 */
@@ -66,7 +66,7 @@ public class QuestionPostController {
     @Parameter(name = "subject", description = "과목명")
     @Transactional
     @GetMapping("subject/{subject}")
-    public List<QuestionPost> getPostsBySubject(@PathVariable("subject") String subject) {
-        return questionPostRepository.findAllBySubject(subject);
+    public List<QuestionPostResponse> getPostsBySubject(@PathVariable("subject") String subject) {
+        return questionPostService.findPostsBySubject(subject);
     }
 }

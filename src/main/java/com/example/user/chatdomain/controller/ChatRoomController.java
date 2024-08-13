@@ -49,4 +49,11 @@ public class ChatRoomController {
         ChatRoomDTO chatRoomDTO = oneToOneChatService.createChatRoomForUsers(id1, id2);
         return ResponseEntity.ok(chatRoomDTO);
     }
+
+    /* 특정 유저가 참가중인 채팅방 목록 조회 */
+    @Operation(summary = "특정 유저가 참가중인 채팅방 목록", description = "특정 유저가 참여중인 채팅방 목록을 조회합니다. 채팅방 이름이 유저 닉네임의 나열이므로 조회하고 싶은 유저 닉네임을 입력하면 해당 유저의 닉네임이 포함된 채팅방이 모두 조회됩니다.")
+    @GetMapping("/rooms/{nickname}")
+    public List<ChatRoomDTO> findRoomsByUsername(@PathVariable("nickname") String nickname) {
+        return chatRoomService.findRoomsByChatRoomName(nickname);
+    }
 }

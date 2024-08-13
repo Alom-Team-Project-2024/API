@@ -1,5 +1,6 @@
 package com.example.user.boarddomain.questiondomain.service;
 
+import com.example.user.boarddomain.questiondomain.dto.QuestionPostImageDTO;
 import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
 import com.example.user.boarddomain.questiondomain.entity.QuestionPostImage;
 import com.example.user.boarddomain.questiondomain.repository.QuestionPostImageRepository;
@@ -15,7 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,24 +32,32 @@ public class QuestionPostImageService {
     private final QuestionPostRepository questionPostRepository;
 
     /* 질문 게시판 이미지 저장 로직 */
-    public QuestionPostImage saveImage(MultipartFile file, Long id) throws IOException {
+    public List<QuestionPostImageDTO> saveImage(List<MultipartFile> files, Long id) throws IOException {
         QuestionPost questionPost = questionPostRepository.findById(id).orElseThrow();
 
-        Path copyLocation = Paths.get(uploadDir + "/" + file.getOriginalFilename());
-        Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+        List<QuestionPostImageDTO> imageDTOS = new ArrayList<>();
 
-        QuestionPostImage questionPostImage = QuestionPostImage.builder()
-                .questionPost(questionPost)
-                .imageUrl(file.getOriginalFilename())
-                .build();
+        for(MultipartFile file : files) {
+            Path copyLocation = Paths.get(uploadDir + "/" + file.getOriginalFilename());
+            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
 
-        return questionPostImageRepository.save(questionPostImage);
+            QuestionPostImage questionPostImage = QuestionPostImage.builder()
+                    .questionPost(questionPost)
+                    .imageUrl(file.getOriginalFilename())
+                    .build();
+            questionPostImageRepository.save(questionPostImage);
+            imageDTOS.add(new QuestionPostImageDTO(questionPostImage.getImageUrl()));
+        }
+
+        return imageDTOS;
     }
 
     /* 질문 게시글에 등록된 이미지 조회 */
-    public List<QuestionPostImage> getAllImages(Long id) {
+    public List<QuestionPostImageDTO> getAllImages(Long id) {
         QuestionPost questionPost = questionPostRepository.findById(id).orElseThrow();
 
-        return questionPost.getImages();
+        return questionPost.getImages().stream()
+                        .map(questionPostImage -> new QuestionPostImageDTO(questionPostImage.getImageUrl()))
+                                .collect(Collectors.toList());
     }
 }

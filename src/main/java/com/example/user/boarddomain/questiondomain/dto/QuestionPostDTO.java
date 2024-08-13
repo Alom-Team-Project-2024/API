@@ -1,6 +1,7 @@
 package com.example.user.boarddomain.questiondomain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Lob;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ public class QuestionPostDTO {
     private String subject;
 
     /* 본문 */
+    @Lob
     @Schema(description = "본문", defaultValue = "C언어 포인터를 잘 모르겠어요 ㅠㅠ 실습문제 3 풀어주실분")
     private String text;
 }

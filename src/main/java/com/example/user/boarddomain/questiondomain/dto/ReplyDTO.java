@@ -1,10 +1,13 @@
 package com.example.user.boarddomain.questiondomain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ReplyDTO {
+
     /* 제목 */
     @Schema(description = "답변 제목", defaultValue = "실습문제 3 답변드립니다.")
     private String title;

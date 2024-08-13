@@ -25,12 +25,22 @@ public abstract class QuestionPostImageBaseTimeEntity {
 
     @PrePersist
     public void onPrePersist() {
+        // createdAt이 null인 경우 현재 시간으로 설정
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
         this.createdAt = truncateToSeconds(this.createdAt);
-        this.modifiedAt = createdAt;
+
+        // modifiedAt을 createdAt과 동일하게 설정
+        this.modifiedAt = this.createdAt;
     }
 
     @PreUpdate
     public void onPreUpdate() {
+        // modifiedAt이 null인 경우 현재 시간으로 설정
+        if (this.modifiedAt == null) {
+            this.modifiedAt = LocalDateTime.now();
+        }
         this.modifiedAt = truncateToSeconds(this.modifiedAt);
     }
 

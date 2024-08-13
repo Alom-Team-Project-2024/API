@@ -1,5 +1,6 @@
 package com.example.user.boarddomain.questiondomain.service;
 
+import com.example.user.boarddomain.questiondomain.dto.ReplyImageDTO;
 import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
 import com.example.user.boarddomain.questiondomain.entity.QuestionPostImage;
 import com.example.user.boarddomain.questiondomain.entity.Reply;
@@ -17,7 +18,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,23 +33,32 @@ public class ReplyImageService {
     private final ReplyImageRepository replyImageRepository;
 
     /* 답변 이미지 등록 로직 */
-    public ReplyImage saveImage(MultipartFile file, Long id) throws IOException {
+    public List<ReplyImageDTO> saveImage(List<MultipartFile> files, Long id) throws IOException {
         Reply reply = replyRepository.findById(id).orElseThrow();
 
-        Path copyLocation = Paths.get(uploadDir + "/" + file.getOriginalFilename());
-        Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+        List<ReplyImageDTO> imageDTOS = new ArrayList<>();
 
-        ReplyImage replyImage = ReplyImage.builder()
-                .reply(reply)
-                .imageUrl(file.getOriginalFilename())
-                .build();
+        for (MultipartFile file : files) {
+            Path copyLocation = Paths.get(uploadDir + "/" + file.getOriginalFilename());
+            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
 
-        return replyImageRepository.save(replyImage);
+            ReplyImage replyImage = ReplyImage.builder()
+                    .reply(reply)
+                    .imageUrl(file.getOriginalFilename())
+                    .build();
+
+            replyImageRepository.save(replyImage);
+
+            imageDTOS.add(new ReplyImageDTO(replyImage.getImageUrl()));
+        }
+        return imageDTOS;
     }
 
     /* 답변 이미지 조회 로직 */
-    public List<ReplyImage> getAllImages(Long id) {
+    public List<ReplyImageDTO> getAllImages(Long id) {
         Reply reply = replyRepository.findById(id).orElseThrow();
-        return reply.getImages();
+        return reply.getImages().stream()
+                .map(replyImage -> new ReplyImageDTO(replyImage.getImageUrl()))
+                .collect(Collectors.toList());
     }
 }
