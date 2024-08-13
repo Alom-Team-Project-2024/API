@@ -18,7 +18,7 @@ public class JWTUtil {
     private final SecretKey secretKey;
 
     /* access token 유효시간 */
-    private final long accessTokenValidity = 1000 * 60 * 20; // 20분
+    private final long accessTokenValidity = 1000 * 60 * 30; // 30분
 
 
     /* SecretKey 설정 */

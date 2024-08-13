@@ -1,11 +1,15 @@
 package com.example.user.boarddomain.questiondomain.entity;
 
 import com.example.user.userdomain.entity.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Entity
@@ -20,7 +24,7 @@ public class QuestionPost extends QuestionPostBaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -50,4 +54,11 @@ public class QuestionPost extends QuestionPostBaseTimeEntity {
     @Column(name = "reply_count")
     private int replyCount;
 
+    /* 글 답변 */
+    @OneToMany(mappedBy = "questionPost")
+    private List<Reply> replies;
+
+    /* 업로드 된 이미지 */
+    @OneToMany(mappedBy = "questionPost")
+    private List<QuestionPostImage> images;
 }

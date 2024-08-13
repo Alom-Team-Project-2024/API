@@ -8,9 +8,9 @@ public enum RegistrationStatus {
     /* 졸업 */
     GRADUATE("졸업");
 
-    private final String description;
+    private final String label;
 
-    RegistrationStatus(String description) {
-        this.description = description;
+    RegistrationStatus(String label) {
+        this.label = label;
     }
 }

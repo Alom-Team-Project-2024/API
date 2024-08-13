@@ -38,6 +38,9 @@ public class SecurityConfig{
         http
                 .httpBasic(auth -> auth.disable());
 
+        http
+                .cors(auth -> auth.disable());
+
         /* 우선은 모든 경로에 인증X -> 추후 수정 예정 */
         http
                 .authorizeHttpRequests(auth -> auth
