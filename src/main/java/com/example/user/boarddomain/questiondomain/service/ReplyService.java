@@ -26,7 +26,6 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
 
     /* 답변 저장 */
-    @Transactional
     public Reply saveReply(@ModelAttribute ReplyDTO replyDTO, Long post_id) {
         QuestionPost questionPost = questionPostRepository.findById(post_id).orElseThrow(NullPointerException::new);
 
@@ -37,7 +36,13 @@ public class ReplyService {
                 .writer(SecurityContextHolder.getContext().getAuthentication().getName())
                 .build();
 
-        return replyRepository.save(reply);
+        Reply savedReply = replyRepository.save(reply);
+
+        // replyCount 동기화
+        questionPost.synchronizedReplyCount();
+        questionPostRepository.save(questionPost);
+
+        return savedReply;
     }
 
     /* 특정 글 모든 답변 return */

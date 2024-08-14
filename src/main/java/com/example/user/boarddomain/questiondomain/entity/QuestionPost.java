@@ -61,4 +61,22 @@ public class QuestionPost extends QuestionPostBaseTimeEntity {
     /* 업로드 된 이미지 */
     @OneToMany(mappedBy = "questionPost")
     private List<QuestionPostImage> images;
+
+
+    /* 게시글 좋아요 증가 */
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    /* 게시글 좋아요 감소 */
+    public void decreaseLikes() {
+        if (this.likes > 0) {
+            this.likes--;
+        }
+    }
+
+    /* 답변 수 동기화 */
+    public void synchronizedReplyCount() {
+        this.replyCount = this.getReplies().size();
+    }
 }

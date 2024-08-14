@@ -2,7 +2,10 @@ package com.example.user.boarddomain.questiondomain.controller;
 
 import com.example.user.boarddomain.questiondomain.dto.ReplyDTO;
 import com.example.user.boarddomain.questiondomain.dto.ReplyResponse;
+import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
 import com.example.user.boarddomain.questiondomain.entity.Reply;
+import com.example.user.boarddomain.questiondomain.repository.QuestionPostRepository;
+import com.example.user.boarddomain.questiondomain.repository.ReplyRepository;
 import com.example.user.boarddomain.questiondomain.service.ReplyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,7 +27,6 @@ import java.util.List;
 public class ReplyController {
 
     private final ReplyService replyService;
-
 
     /* 답변 등록 */
     @Operation(summary = "답변 등록", description = "제목 (title), 본문 (text)를 작성하여 질문 게시글에 답변을 등록합니다. 답변 등록 후 해당 답변의 id 값을 반환합니다.")

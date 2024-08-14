@@ -37,6 +37,12 @@ public class QuestionPostImageService {
 
         List<QuestionPostImageDTO> imageDTOS = new ArrayList<>();
 
+        // 업로드 디렉토리 확인 및 생성
+        Path uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
         for(MultipartFile file : files) {
             Path copyLocation = Paths.get(uploadDir + "/" + file.getOriginalFilename());
             Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);

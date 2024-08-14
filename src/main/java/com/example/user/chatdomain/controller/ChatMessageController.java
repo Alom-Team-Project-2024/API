@@ -12,9 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+/**
+ * /pub/chats/messages 경로로 메시지를 받아서
+ * /sub/chats/room/{roomId} 경로로 브로드캐스팅
+ */
+@RestController
 @AllArgsConstructor
-@RequestMapping("/chats")
 @Tag(name = "Chat", description = "채팅 API")
 public class ChatMessageController {
 
@@ -22,14 +25,14 @@ public class ChatMessageController {
     private final OneToOneChatService oneToOneChatService;
 
     /* 메시지 전송 */
-    @Operation(summary = "채팅 메시지 전송", description = "메시지를 해당 채팅방의 구독자들에게 전송합니다.")
-    @MessageMapping("/messages")
+    @Operation(summary = "채팅 메시지 전송", description = "/pub/chats/messages 경로로 메시지를 받아서 /sub/chats/room/{roomId} 경로로 브로드캐스팅 합니다.")
+    @MessageMapping("chats/messages")
     public void sendMessage(ChatMessageDTO chatMessageDTO) {
 
         // 메시지 저장
         ChatMessage chatMessage = oneToOneChatService.sendMessageToChatRoom(chatMessageDTO);
 
         // 메시지를 해당 채팅방의 구독자들에게 전송
-        messagingTemplate.convertAndSend("/pub/" + chatMessage.getChatRoomId(), chatMessage);
+        messagingTemplate.convertAndSend("/sub/chats/room/" + chatMessage.getChatRoomId(), chatMessage);
     }
 }

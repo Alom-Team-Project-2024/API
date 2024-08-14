@@ -100,6 +100,22 @@ public class QuestionPostService {
                 .collect(Collectors.toList());
     }
 
+    /* 질문 게시글 좋아요 증가 로직 */
+    @Transactional
+    public int increaseLikes(Long id) {
+        QuestionPost questionPost = questionPostRepository.findById(id).orElseThrow();
+        questionPost.increaseLikes();
+        return questionPost.getLikes();
+    }
+
+    /* 질문 게시글 좋아요 감소 로직 */
+    @Transactional
+    public int decreaseLikes(Long id) {
+        QuestionPost questionPost = questionPostRepository.findById(id).orElseThrow();
+        questionPost.decreaseLikes();
+        return questionPost.getLikes();
+    }
+
 
     private QuestionPostResponse convertToResponse(QuestionPost questionPost) {
         // QuestionPostImage 리스트를 QuestionPostImageDTO 리스트로 변환
