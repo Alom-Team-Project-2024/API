@@ -47,4 +47,20 @@ public class ReplyController {
     public List<ReplyResponse> getReplies(@PathVariable Long post_id) {
         return replyService.getAllReplies(post_id);
     }
+
+    /* 답변 좋아요 증가 */
+    @Operation(summary = "답변 좋아요 증가", description = "답변의 Id 값을 전달하면 해당 답변의 좋아요 수가 1 증가합니다.")
+    @Parameter(name = "reply_id", description = "답변 id")
+    @PostMapping("/reply/{reply_id}/likes/up")
+    public ResponseEntity<Integer> increaseLikes(@PathVariable("reply_id") Long id) {
+        return ResponseEntity.ok(replyService.increaseLikes(id));
+    }
+
+    /* 답변 좋아요 감소 */
+    @Operation(summary = "답변 좋아요 감소", description = "답변의 Id 값을 전달하면 해당 답변의 좋아요 수가 1 감소합니다. 단, 좋아요 수가 0인 답변의 경우 변동이 없습니다.")
+    @Parameter(name = "reply_id", description = "해당 답변 id")
+    @PostMapping("/reply/{reply_id}/likes/down")
+    public ResponseEntity<Integer> decreaseLikes(@PathVariable("reply_id") Long id) {
+        return ResponseEntity.ok(replyService.decreaseLikes(id));
+    }
 }

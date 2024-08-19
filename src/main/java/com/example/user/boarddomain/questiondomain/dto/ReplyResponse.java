@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -32,4 +33,12 @@ public class ReplyResponse {
     /* 답변 이미지 */
     @Schema(description = "답변 이미지")
     private List<ReplyImageDTO> images;
+
+    /* 답변 작성 시간 */
+    @Schema(description = "답변 작성 시간")
+    private LocalDateTime createdAt;
+
+    /* 답변 수정 시간 */
+    @Schema(description = "답변 수정 시간")
+    private LocalDateTime modifiedAt;
 }

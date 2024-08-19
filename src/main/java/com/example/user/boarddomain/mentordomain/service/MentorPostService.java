@@ -48,6 +48,8 @@ public class MentorPostService {
                 .writer(mentorPost.getWriter())
                 .major(mentorPost.getMajor())
                 .likes(mentorPost.getLikes())
+                .createdAt(mentorPost.getCreatedAt())
+                .modifiedAt(mentorPost.getModifiedAt())
                 .build();
     }
 
@@ -64,6 +66,8 @@ public class MentorPostService {
                         .writer(mentorPost.getWriter())
                         .major(mentorPost.getMajor())
                         .likes(mentorPost.getLikes())
+                        .createdAt(mentorPost.getCreatedAt())
+                        .modifiedAt(mentorPost.getModifiedAt())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -81,6 +85,8 @@ public class MentorPostService {
                         .writer(mentorPost.getWriter())
                         .major(mentorPost.getMajor())
                         .likes(mentorPost.getLikes())
+                        .createdAt(mentorPost.getCreatedAt())
+                        .modifiedAt(mentorPost.getModifiedAt())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -89,7 +95,7 @@ public class MentorPostService {
     @Transactional
     public MentorPostResponse findPostById(Long id) {
         MentorPost mentorPost = mentorPostRepository.findById(id).orElseThrow();
-        return new MentorPostResponse(mentorPost.getCategory(), mentorPost.getTitle(), mentorPost.getText(), mentorPost.getWriter(), mentorPost.getMajor(), mentorPost.getLikes());
+        return new MentorPostResponse(mentorPost.getCategory(), mentorPost.getTitle(), mentorPost.getText(), mentorPost.getWriter(), mentorPost.getMajor(), mentorPost.getLikes(), mentorPost.getCreatedAt(), mentorPost.getModifiedAt());
     }
 
     /* 게시글 제목을 통한 특정 글 조회 로직 */
@@ -103,6 +109,8 @@ public class MentorPostService {
                         .writer(mentorPost.getWriter())
                         .major(mentorPost.getMajor())
                         .likes(mentorPost.getLikes())
+                        .createdAt(mentorPost.getCreatedAt())
+                        .modifiedAt(mentorPost.getModifiedAt())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -118,6 +126,8 @@ public class MentorPostService {
                         .writer(mentorPost.getWriter())
                         .major(mentorPost.getMajor())
                         .likes(mentorPost.getLikes())
+                        .createdAt(mentorPost.getCreatedAt())
+                        .modifiedAt(mentorPost.getModifiedAt())
                         .build())
                 .collect(Collectors.toList());
     }

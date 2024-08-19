@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @Builder
@@ -38,4 +40,12 @@ public class MentorPostResponse {
     /* 좋아요 */
     @Schema(description = "좋아요")
     private int likes;
+
+    /* 글 작성 시간 */
+    @Schema(description = "글 작성 시간")
+    private LocalDateTime createdAt;
+
+    /* 글 수정 시간 */
+    @Schema(description = "글 수정 시간")
+    private LocalDateTime modifiedAt;
 }

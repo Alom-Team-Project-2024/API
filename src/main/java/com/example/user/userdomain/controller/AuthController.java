@@ -46,11 +46,18 @@ public class AuthController {
         return authUserDTO;
     }
 
-    /* 유저 정보 조회 */
-    @Operation(summary = "유저 조회", description = "유저 id값을 통해 특정 유저 정보를 조회합니다.")
-    @GetMapping("/{id}")
+    /* Id 값으로 유저 정보 조회 */
+    @Operation(summary = "Id를 통해 유저 조회", description = "유저 id값을 통해 특정 유저 정보를 조회합니다.")
+    @GetMapping("/id/{id}")
     public UserResponse findUser(@PathVariable("id") Long id) {
         return sejongAuthService.findUser(id);
+    }
+
+    /* 학번으로 유저 정보 조회 */
+    @Operation(summary = "학번으로 유저 조회", description = "유저 학번을 통해 유저 정보를 조회합니다.")
+    @GetMapping("username/{username}")
+    public UserResponse findByUsername(@PathVariable("username") String username) {
+        return sejongAuthService.findByUsername(username);
     }
 
     /* 가입된 모든 유저 조회 */

@@ -53,6 +53,22 @@ public class ReplyService {
         return replies.stream().map(this::convertToReplyResponse).collect(Collectors.toList());
     }
 
+    /* 답변 좋아요 증가 로직 */
+    @Transactional
+    public int increaseLikes(Long id) {
+        Reply reply = replyRepository.findById(id).orElseThrow();
+        reply.increaseLikes();
+        return reply.getLikes();
+    }
+
+    /* 답변 좋아요 감소 로직 */
+    @Transactional
+    public int decreaseLikes(Long id) {
+        Reply reply = replyRepository.findById(id).orElseThrow();
+        reply.decreaseLikes();
+        return reply.getLikes();
+    }
+
 
     private ReplyResponse convertToReplyResponse(Reply reply) {
         // ReplyImage 리스트를 ReplyImageDTO 리스트로 변환
@@ -66,6 +82,8 @@ public class ReplyService {
                 .writer(reply.getWriter())
                 .likes(reply.getLikes())
                 .images(imageDTOS)
+                .createdAt(reply.getCreatedAt())
+                .modifiedAt(reply.getModifiedAt())
                 .build();
     }
 }

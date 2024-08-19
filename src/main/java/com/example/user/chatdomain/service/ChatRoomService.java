@@ -28,28 +28,28 @@ public class ChatRoomService {
     /* 전체 채팅방 조회 로직 */
     public List<ChatRoomDTO> getAllChatRooms() {
         return chatRoomRepository.findAll().stream()
-                .map(chatRoom -> new ChatRoomDTO(chatRoom.getChatRoomName()))
+                .map(chatRoom -> new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt()))
                 .collect(Collectors.toList());
     }
 
     /* id 값으로 특정 채팅방 조회 로직 */
     public ChatRoomDTO getChatRoomById(Long id) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElseThrow();
-        return new ChatRoomDTO(chatRoom.getChatRoomName());
+        return new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt());
 
     }
 
     /* 채팅방 이름으로 특정 채팅방 조회 로직 */
     public ChatRoomDTO getChatRoomByName(String name) {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByChatRoomName(name).orElseThrow();
-        return new ChatRoomDTO(chatRoom.getChatRoomName());
+        return new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt());
     }
 
     /* 특정 유저가 참여중인 모든 채팅방 조회 로직 */
     public List<ChatRoomDTO> findRoomsByChatRoomName(String nickname) {
 
         return chatRoomRepository.findAllByChatRoomName(nickname).stream()
-                .map(chatRoom -> new ChatRoomDTO(chatRoom.getChatRoomName()))
+                .map(chatRoom -> new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt()))
                 .collect(Collectors.toList());
     }
 

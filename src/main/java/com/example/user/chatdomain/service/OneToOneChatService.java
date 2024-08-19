@@ -35,7 +35,7 @@ public class OneToOneChatService {
         chatRoomService.addUserToChatRoom(userResponse1, chatRoom);
         chatRoomService.addUserToChatRoom(userResponse2, chatRoom);
 
-        return new ChatRoomDTO(chatRoom.getChatRoomName());
+        return new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt());
     }
 
     /* 1대1 채팅방에서 메시지 보내는 로직 */

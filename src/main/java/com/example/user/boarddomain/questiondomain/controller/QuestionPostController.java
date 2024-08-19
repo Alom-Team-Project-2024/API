@@ -68,15 +68,15 @@ public class QuestionPostController {
     @Operation(summary = "게시글 좋아요 증가", description = "게시글의 Id 값을 전달하면 해당 게시글의 좋아요 수가 1 증가합니다.")
     @Parameter(name = "post_id", description = "해당 게시물 id")
     @PostMapping("/{post_id}/likes/up")
-    public ResponseEntity<String> increaseLikes(@PathVariable("post_id") Long id) {
-        return ResponseEntity.ok("해당 게시글의 좋아요 수 = " + questionPostService.increaseLikes(id));
+    public ResponseEntity<Integer> increaseLikes(@PathVariable("post_id") Long id) {
+        return ResponseEntity.ok(questionPostService.increaseLikes(id));
     }
 
     /* 게시글 좋아요 감소 */
     @Operation(summary = "게시글 좋아요 감소", description = "게시글의 Id 값을 전달하면 해당 게시글의 좋아요 수가 1 감소합니다. 단, 좋아요 수가 0인 게시물의 경우 변동이 없습니다.")
     @Parameter(name = "post_id", description = "해당 게시물 id")
     @PostMapping("/{post_id}/likes/down")
-    public ResponseEntity<String> decreaseLikes(@PathVariable("post_id") Long id) {
-        return ResponseEntity.ok("해당 게시글의 좋아요 수 = " + questionPostService.decreaseLikes(id));
+    public ResponseEntity<Integer> decreaseLikes(@PathVariable("post_id") Long id) {
+        return ResponseEntity.ok(questionPostService.decreaseLikes(id));
     }
 }

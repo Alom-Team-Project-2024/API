@@ -4,12 +4,14 @@ import com.example.user.boarddomain.questiondomain.entity.QuestionPostImage;
 import com.example.user.boarddomain.questiondomain.entity.Reply;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Lob;
+import jdk.jshell.execution.JdiExecutionControl;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -51,4 +53,11 @@ public class QuestionPostResponse {
     @Schema(description = "첨부된 이미지")
     private List<QuestionPostImageDTO> images;
 
+    /* 글 작성 시간 */
+    @Schema(description = "글 작성 시간")
+    private LocalDateTime createdAt;
+
+    /* 글 수정 시간 */
+    @Schema(description = "글 수정 시간")
+    private LocalDateTime modifiedAt;
 }

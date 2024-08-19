@@ -31,11 +31,11 @@ public class UserProfileController {
     /* 닉네임 변경 */
     @Operation(summary = "닉네임 변경", description = "새로운 닉네임 설정")
     @PatchMapping("")
-    public String editNickname(@RequestBody UserInfoUpdateRequest userInfoUpdateRequest) {
+    public int editNickname(@RequestBody UserInfoUpdateRequest userInfoUpdateRequest) {
         if (userProfileService.changeNickname(userInfoUpdateRequest)) {
-            return "닉네임이 " + userInfoUpdateRequest.getNickname() + " 으로 변경되었습니다.";
+            return 1;
         }
-        return "이미 존재하는 닉네임입니다.";
+        return 0;
     }
 
     /* 프로필 사진 확인 */

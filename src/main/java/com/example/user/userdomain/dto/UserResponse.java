@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -59,4 +60,13 @@ public class UserResponse {
     /* 활동 점수 */
     @Schema(description = "활동 점수")
     private double point;
+
+    /* 생성 날짜 */
+    @Schema(description = "생성 날짜")
+    private LocalDateTime createdAt;
+
+    /* 수정 날짜 */
+    @Schema(description = "수정 날짜")
+    private LocalDateTime modifiedAt;
+
 }

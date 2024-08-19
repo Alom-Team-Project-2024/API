@@ -61,6 +61,8 @@ public class QuestionPostService {
                 .replyCount(questionPost.getReplyCount())
                 .replies(replyDTOS)
                 .images(imageDTOS)
+                .createdAt(questionPost.getCreatedAt())
+                .modifiedAt(questionPost.getModifiedAt())
                 .build();
 
         return questionPostResponse;
@@ -134,6 +136,8 @@ public class QuestionPostService {
                 .replyCount(questionPost.getReplyCount())
                 .replies(replyDTOS)
                 .images(imageDTOS)
+                .createdAt(questionPost.getCreatedAt())
+                .modifiedAt(questionPost.getModifiedAt())
                 .build();
     }
 
