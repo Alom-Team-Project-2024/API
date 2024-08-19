@@ -27,10 +27,10 @@ public class OneToOneChatService {
     private final ChatMessageRepository chatMessageRepository;
 
     /* 1대1 채팅방 생성 */
-    public ChatRoomDTO createChatRoomForUsers(Long id1, Long id2) {
+    public ChatRoomDTO createChatRoomForUsers(String username1, String username2) {
 
-        UserResponse userResponse1 = sejongAuthService.findUser(id1);
-        UserResponse userResponse2 = sejongAuthService.findUser(id2);
+        UserResponse userResponse1 = sejongAuthService.findByUsername(username1);
+        UserResponse userResponse2 = sejongAuthService.findByUsername(username2);
 
 
         String chatRoomName = userResponse1.getNickname() + userResponse2.getNickname();

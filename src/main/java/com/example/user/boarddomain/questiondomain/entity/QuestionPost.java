@@ -46,8 +46,9 @@ public class QuestionPost extends QuestionPostBaseTimeEntity {
     private int likes;
 
     /* 스크랩 수 */
+    @Column(name = "scrap_count")
     @ColumnDefault("0")
-    private int clips;
+    private int scrapCount;
 
     /* 답변 수 */
     @ColumnDefault("0")
@@ -78,5 +79,10 @@ public class QuestionPost extends QuestionPostBaseTimeEntity {
     /* 답변 수 동기화 */
     public void synchronizedReplyCount() {
         this.replyCount = this.getReplies().size();
+    }
+
+    /* 스크랩 수 증가 */
+    public void increaseScrapCount() {
+        this.scrapCount++;
     }
 }

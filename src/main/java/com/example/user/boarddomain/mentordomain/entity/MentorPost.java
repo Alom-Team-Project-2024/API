@@ -50,4 +50,25 @@ public class MentorPost extends MentorBaseTimeEntity {
     @ColumnDefault("0")
     private int likes;
 
+    /* 스크랩 개수 */
+    @Column(name = "scrap_count")
+    @ColumnDefault("0")
+    private int scrapCount;
+
+    /* 게시글 좋아요 증가 */
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    /* 게시글 좋아요 감소 */
+    public void decreaseLikes() {
+        if (this.likes > 0) {
+            this.likes--;
+        }
+    }
+
+    /* 스크랩 수 증가 */
+    public void increaseScrapCount() {
+        this.scrapCount++;
+    }
 }

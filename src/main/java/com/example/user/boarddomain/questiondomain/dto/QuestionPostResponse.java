@@ -39,7 +39,7 @@ public class QuestionPostResponse {
 
     /* 스크랩 수 */
     @Schema(description = "스크랩 수")
-    private int clips;
+    private int scrapCount;
 
     /* 답변 수 */
     @Schema(description = "답변 수")

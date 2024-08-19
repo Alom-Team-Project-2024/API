@@ -43,10 +43,10 @@ public class ChatRoomController {
     }
 
     /* 새로운 채팅방 생성 */
-    @Operation(summary = "새로운 채팅방 생성", description = "새로운 채팅방을 생성합니다.")
+    @Operation(summary = "새로운 채팅방 생성", description = "학번 2개를 받아 새로운 채팅방을 생성합니다.")
     @PostMapping("")
-    public ResponseEntity<ChatRoomDTO> createChat(Long id1, Long id2) {
-        ChatRoomDTO chatRoomDTO = oneToOneChatService.createChatRoomForUsers(id1, id2);
+    public ResponseEntity<ChatRoomDTO> createChat(String username1, String username2) {
+        ChatRoomDTO chatRoomDTO = oneToOneChatService.createChatRoomForUsers(username1, username2);
         return ResponseEntity.ok(chatRoomDTO);
     }
 
