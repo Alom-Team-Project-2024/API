@@ -42,16 +42,16 @@ public class SecurityConfig{
                 .cors(auth -> auth.disable());
 
         /* 우선은 모든 경로에 인증X -> 추후 수정 예정 */
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/users/login", "/users/login/**", "/docs/**",
-                                "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                        .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated());
-
 //        http
 //                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/**").permitAll());
+//                        .requestMatchers("/", "/users/login", "/users/login/**", "/docs/**",
+//                                "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+//                        .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
+//                        .anyRequest().authenticated());
+
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/**").permitAll());
 
         // 필터 등록
         http

@@ -1,6 +1,7 @@
 package com.example.user.chatdomain.service;
 
 import com.example.user.chatdomain.dto.ChatMessageDTO;
+import com.example.user.chatdomain.dto.ChatMessageResponse;
 import com.example.user.chatdomain.dto.ChatRoomDTO;
 import com.example.user.chatdomain.entity.ChatMessage;
 import com.example.user.chatdomain.entity.ChatRoom;
@@ -11,6 +12,9 @@ import com.example.user.userdomain.service.SejongAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -40,14 +44,29 @@ public class OneToOneChatService {
 
     /* 1대1 채팅방에서 메시지 보내는 로직 */
     public ChatMessage sendMessageToChatRoom(ChatMessageDTO chatMessageDTO) {
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomByChatRoomName(chatMessageDTO.getSender()).orElseThrow();
+        ChatRoom chatRoom = chatRoomRepository.findById(chatMessageDTO.getChatRoomId()).orElseThrow();
         ChatMessage chatMessage = ChatMessage.builder()
-                .chatRoomId(chatRoom.getId().toString())
+                .chatRoom(chatRoom)
                 .sender(chatMessageDTO.getSender())
                 .message(chatMessageDTO.getMessage())
                 .build();
 
         // DB에 메시지 저장
         return chatMessageRepository.save(chatMessage);
+    }
+
+    /* 특정 채팅방의 모든 메시지 조회 */
+    public List<ChatMessageResponse> getMessagesFromChatRoom(Long chatRoomId) {
+
+        List<ChatMessage> chatMessageList = chatMessageRepository.findAllByChatRoomId(chatRoomId);
+
+        return chatMessageList.stream()
+                .map(chatMessage -> ChatMessageResponse.builder()
+                        .chatRoomId(chatMessage.getId())
+                        .sender(chatMessage.getSender())
+                        .message(chatMessage.getMessage())
+                        .createdAt(chatMessage.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
