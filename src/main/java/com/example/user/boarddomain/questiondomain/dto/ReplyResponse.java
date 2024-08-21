@@ -1,17 +1,21 @@
 package com.example.user.boarddomain.questiondomain.dto;
 
-import com.example.user.boarddomain.questiondomain.entity.ReplyImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 public class ReplyResponse {
+
+    /* 답변 Id*/
+    @Schema(description = "답변 Id")
+    private Long id;
 
     /* 제목 */
     @Schema(description = "답변 제목")
@@ -32,4 +36,12 @@ public class ReplyResponse {
     /* 답변 이미지 */
     @Schema(description = "답변 이미지")
     private List<ReplyImageDTO> images;
+
+    /* 답변 작성 시간 */
+    @Schema(description = "답변 작성 시간")
+    private LocalDateTime createdAt;
+
+    /* 답변 수정 시간 */
+    @Schema(description = "답변 수정 시간")
+    private LocalDateTime modifiedAt;
 }

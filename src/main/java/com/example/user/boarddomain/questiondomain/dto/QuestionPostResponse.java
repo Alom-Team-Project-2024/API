@@ -1,15 +1,13 @@
 package com.example.user.boarddomain.questiondomain.dto;
 
-import com.example.user.boarddomain.questiondomain.entity.QuestionPostImage;
-import com.example.user.boarddomain.questiondomain.entity.Reply;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,6 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 public class QuestionPostResponse {
+
+    /* 글 Id */
+    @Schema(description = "글 Id")
+    private Long id;
 
     /* 제목 (과목명) */
     @Schema(description = "글 제목(과목명)")
@@ -37,7 +39,7 @@ public class QuestionPostResponse {
 
     /* 스크랩 수 */
     @Schema(description = "스크랩 수")
-    private int clips;
+    private int scrapCount;
 
     /* 답변 수 */
     @Schema(description = "답변 수")
@@ -51,4 +53,11 @@ public class QuestionPostResponse {
     @Schema(description = "첨부된 이미지")
     private List<QuestionPostImageDTO> images;
 
+    /* 글 작성 시간 */
+    @Schema(description = "글 작성 시간")
+    private LocalDateTime createdAt;
+
+    /* 글 수정 시간 */
+    @Schema(description = "글 수정 시간")
+    private LocalDateTime modifiedAt;
 }

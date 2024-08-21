@@ -19,7 +19,9 @@ public class ChatMessage extends ChatMessageBaseTimeEntity{
     private Long id;
 
     /* 채팅방 정보 */
-    private String chatRoomId;
+    @ManyToOne
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom chatRoom;
 
     /* 보내는 사람 */
     private String sender;

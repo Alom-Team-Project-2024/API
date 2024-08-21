@@ -1,27 +1,25 @@
-package com.example.user.chatdomain.entity;
+package com.example.user.boarddomain.questiondomain.entity;
 
 import com.example.user.userdomain.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Entity
 @Getter
-@Builder
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserChatRoom {
+@Builder
+public class QuestionPostScrap {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "chatroom_id")
-    private ChatRoom chatRoom;
-
-    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "question_post_id")
+    private QuestionPost questionPost;
 }

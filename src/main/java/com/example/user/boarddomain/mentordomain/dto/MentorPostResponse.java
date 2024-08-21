@@ -8,11 +8,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
 public class MentorPostResponse {
+
+    /* 구인 게시판 글 Id */
+    @Schema(description = "구인 게시판 글 Id")
+    private Long id;
 
     /* 글 카테고리 (멘토 구해요 / 멘티 구해요) */
     @Schema(description = "글 카테고리 (멘토 구해요 / 멘티 구해요)")
@@ -38,4 +44,12 @@ public class MentorPostResponse {
     /* 좋아요 */
     @Schema(description = "좋아요")
     private int likes;
+
+    /* 글 작성 시간 */
+    @Schema(description = "글 작성 시간")
+    private LocalDateTime createdAt;
+
+    /* 글 수정 시간 */
+    @Schema(description = "글 수정 시간")
+    private LocalDateTime modifiedAt;
 }

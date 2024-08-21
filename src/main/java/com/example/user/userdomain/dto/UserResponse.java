@@ -1,24 +1,22 @@
 package com.example.user.userdomain.dto;
 
-import com.example.user.chatdomain.dto.UserChatRoomDTO;
-import com.example.user.chatdomain.entity.UserChatRoom;
 import com.example.user.userdomain.entity.RegistrationStatus;
 import com.example.user.userdomain.entity.Role;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Set;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @Builder
 public class UserResponse {
+
+    /* 유저 Id */
+    @Schema(description = "유저 Id")
+    private Long id;
 
     /* 아이디 */
     @Schema(description = "아이디")
@@ -59,4 +57,13 @@ public class UserResponse {
     /* 활동 점수 */
     @Schema(description = "활동 점수")
     private double point;
+
+    /* 생성 날짜 */
+    @Schema(description = "생성 날짜")
+    private LocalDateTime createdAt;
+
+    /* 수정 날짜 */
+    @Schema(description = "수정 날짜")
+    private LocalDateTime modifiedAt;
+
 }

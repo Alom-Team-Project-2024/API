@@ -1,9 +1,6 @@
 package com.example.user.userdomain.dto;
 
 import com.example.user.userdomain.entity.RegistrationStatus;
-import com.example.user.userdomain.entity.Role;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

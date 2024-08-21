@@ -57,7 +57,7 @@ public class SejongAuthService {
         return userRepository.findByUsername(authUserDTO.getUsername());
     }
 
-    /* 특정 유저 조회 로직 */
+    /* Id 값으로 특정 유저 조회 로직 */
     @Transactional
     public UserResponse findUser(Long id) {
         User user = userRepository.findById(id).orElseThrow();
@@ -65,10 +65,20 @@ public class SejongAuthService {
         return getUserResponse(user);
     }
 
-    /* User 객체를 UserResponse 객체로 변환하는 메서드 */
-    private UserResponse getUserResponse(User user) {
+    /* 학번으로 특정 유저 조회 로직 */
+    @Transactional
+    public UserResponse findByUsername(String username) {
+        User user = userRepository.findByUsername(username);
 
-        return new UserResponse(user.getUsername(), user.getName(), user.getNickname(), user.getProfileImage(), user.getMajor(), user.getStudentCode(), user.getStudentGrade(), user.getRegistrationStatus(), user.getRole(), user.getPoint());
+        return getUserResponse(user);
+    }
+
+    /* 닉네임으로 특정 유저 조회 로직 */
+    @Transactional
+    public UserResponse findByNickname(String nickname) {
+        User user = userRepository.findByNickname(nickname);
+
+        return getUserResponse(user);
     }
 
     /* 모든 유저 조회 로직 */
@@ -79,5 +89,11 @@ public class SejongAuthService {
         return userList.stream()
                 .map(this::getUserResponse)
                 .collect(Collectors.toList());
+    }
+
+    /* User 객체를 UserResponse 객체로 변환하는 메서드 */
+    private UserResponse getUserResponse(User user) {
+
+        return new UserResponse(user.getId(), user.getUsername(), user.getName(), user.getNickname(), user.getProfileImage(), user.getMajor(), user.getStudentCode(), user.getStudentGrade(), user.getRegistrationStatus(), user.getRole(), user.getPoint(), user.getCreatedAt(), user.getModifiedAt());
     }
 }

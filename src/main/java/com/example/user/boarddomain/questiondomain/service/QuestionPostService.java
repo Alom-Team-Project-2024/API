@@ -47,23 +47,7 @@ public class QuestionPostService {
     public QuestionPostResponse findPost(Long id) {
         QuestionPost questionPost = questionPostRepository.findById(id).orElseThrow();
 
-        // QuestionPostImage 리스트를 QuestionPostImageDTO 리스트로 변경
-        List<QuestionPostImageDTO> imageDTOS = getQuestionPostImageDTOS(questionPost);
-
-        List<ReplyDTO> replyDTOS = getReplyDTOS(questionPost);
-
-        QuestionPostResponse questionPostResponse = QuestionPostResponse.builder()
-                .subject(questionPost.getSubject())
-                .text(questionPost.getText())
-                .writer(questionPost.getWriter())
-                .likes(questionPost.getLikes())
-                .clips(questionPost.getClips())
-                .replyCount(questionPost.getReplyCount())
-                .replies(replyDTOS)
-                .images(imageDTOS)
-                .build();
-
-        return questionPostResponse;
+        return this.convertToResponse(questionPost);
     }
 
     /* 질문게시판에 등록된 모든 글 조회 로직 */
@@ -100,6 +84,22 @@ public class QuestionPostService {
                 .collect(Collectors.toList());
     }
 
+    /* 질문 게시글 좋아요 증가 로직 */
+    @Transactional
+    public int increaseLikes(Long id) {
+        QuestionPost questionPost = questionPostRepository.findById(id).orElseThrow();
+        questionPost.increaseLikes();
+        return questionPost.getLikes();
+    }
+
+    /* 질문 게시글 좋아요 감소 로직 */
+    @Transactional
+    public int decreaseLikes(Long id) {
+        QuestionPost questionPost = questionPostRepository.findById(id).orElseThrow();
+        questionPost.decreaseLikes();
+        return questionPost.getLikes();
+    }
+
 
     private QuestionPostResponse convertToResponse(QuestionPost questionPost) {
         // QuestionPostImage 리스트를 QuestionPostImageDTO 리스트로 변환
@@ -110,14 +110,17 @@ public class QuestionPostService {
 
         // QuestionPost를 QuestionPostResponse로 변환하여 반환
         return QuestionPostResponse.builder()
+                .id(questionPost.getId())
                 .subject(questionPost.getSubject())
                 .text(questionPost.getText())
                 .writer(questionPost.getWriter())
                 .likes(questionPost.getLikes())
-                .clips(questionPost.getClips())
+                .scrapCount(questionPost.getScrapCount())
                 .replyCount(questionPost.getReplyCount())
                 .replies(replyDTOS)
                 .images(imageDTOS)
+                .createdAt(questionPost.getCreatedAt())
+                .modifiedAt(questionPost.getModifiedAt())
                 .build();
     }
 

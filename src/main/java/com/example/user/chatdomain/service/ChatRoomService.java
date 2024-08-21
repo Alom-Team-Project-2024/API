@@ -1,6 +1,7 @@
 package com.example.user.chatdomain.service;
 
 import com.example.user.chatdomain.dto.ChatRoomDTO;
+import com.example.user.chatdomain.dto.ChatRoomResponse;
 import com.example.user.chatdomain.entity.ChatRoom;
 import com.example.user.chatdomain.entity.UserChatRoom;
 import com.example.user.chatdomain.repository.ChatRoomRepository;
@@ -11,9 +12,11 @@ import com.example.user.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,35 +29,41 @@ public class ChatRoomService {
     private final UserChatRoomRepository userChatRoomRepository;
 
     /* 전체 채팅방 조회 로직 */
-    public List<ChatRoomDTO> getAllChatRooms() {
+    @Transactional
+    public List<ChatRoomResponse> getAllChatRooms() {
         return chatRoomRepository.findAll().stream()
-                .map(chatRoom -> new ChatRoomDTO(chatRoom.getChatRoomName()))
+                .map(this::convertToChatRoomResponse)
                 .collect(Collectors.toList());
+
     }
 
     /* id 값으로 특정 채팅방 조회 로직 */
-    public ChatRoomDTO getChatRoomById(Long id) {
+    @Transactional
+    public ChatRoomResponse getChatRoomById(Long id) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElseThrow();
-        return new ChatRoomDTO(chatRoom.getChatRoomName());
 
+        return this.convertToChatRoomResponse(chatRoom);
     }
 
     /* 채팅방 이름으로 특정 채팅방 조회 로직 */
-    public ChatRoomDTO getChatRoomByName(String name) {
+    @Transactional
+    public ChatRoomResponse getChatRoomByName(String name) {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByChatRoomName(name).orElseThrow();
-        return new ChatRoomDTO(chatRoom.getChatRoomName());
+        return this.convertToChatRoomResponse(chatRoom);
     }
 
     /* 특정 유저가 참여중인 모든 채팅방 조회 로직 */
-    public List<ChatRoomDTO> findRoomsByChatRoomName(String nickname) {
+    @Transactional
+    public List<ChatRoomResponse> findRoomsByChatRoomName(String nickname) {
 
         return chatRoomRepository.findAllByChatRoomName(nickname).stream()
-                .map(chatRoom -> new ChatRoomDTO(chatRoom.getChatRoomName()))
+                .map(this::convertToChatRoomResponse)
                 .collect(Collectors.toList());
     }
 
     /* 새로운 채팅방 만들기 */
     /* 추후 1대1 채팅방 service에서 해당 메서드 사용하여 채팅방 이름 설정 */
+    @Transactional
     public ChatRoom createChatRoom(String name) {
         ChatRoom chatRoom = ChatRoom.builder()
                 .chatRoomName(name)
@@ -65,6 +74,7 @@ public class ChatRoomService {
 
     /* UserChatRoom에 새로운 유저 추가 */
     /* 추후 1대1 채팅방 service에서 해당 메서드 사용하여 채팅방에 user 넣어줌 */
+    @Transactional
     public void addUserToChatRoom(UserResponse userResponse, ChatRoom chatRoom) {
         User user = userRepository.findByUsername(userResponse.getUsername());
 
@@ -73,5 +83,24 @@ public class ChatRoomService {
                 .chatRoom(chatRoom)
                 .build();
         userChatRoomRepository.save(userChatRoom);
+    }
+
+    private ChatRoomResponse convertToChatRoomResponse(ChatRoom chatRoom) {
+
+        // 채팅방에 속한 유저들을 가져오기
+        List<UserResponse> userResponseList = chatRoom.getUserChatRooms().stream()
+                .map(userChatRoom -> {
+                    User user = userChatRoom.getUser();
+                    return new UserResponse(user.getId(), user.getUsername(), user.getName(), user.getNickname(), user.getProfileImage(), user.getMajor(), user.getStudentCode(), user.getStudentGrade(), user.getRegistrationStatus(), user.getRole(), user.getPoint(), user.getCreatedAt(), user.getModifiedAt());
+                })
+                .collect(Collectors.toList());
+
+        return ChatRoomResponse.builder()
+                .id(chatRoom.getId())
+                .chatRoomName(chatRoom.getChatRoomName())
+                .userResponseList(userResponseList)
+                .createdAt(chatRoom.getCreatedAt())
+                .modifiedAt(chatRoom.getModifiedAt())
+                .build();
     }
 }

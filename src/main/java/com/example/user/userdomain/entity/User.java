@@ -68,11 +68,18 @@ public class User extends UserBaseTimeEntity {
     @ColumnDefault("36.5")
     private double point;
 
+    // 닉네임 변경
     public void changeNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    // 프로필 이미지 변경
     public void changeProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    // 온도 변경
+    public void changePoint(double point) {
+        this.point = point;
     }
 }

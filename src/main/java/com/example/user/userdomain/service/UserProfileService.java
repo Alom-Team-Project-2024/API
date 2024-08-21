@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,10 +67,35 @@ public class UserProfileService {
     }
 
     /* 프로필 확인 */
+    @Transactional
     public String getUserProfileImage(String username) {
         log.info("프로필 확인 서비스");
         User user = userRepository.findByUsername(username);
 
         return user.getProfileImage();
+    }
+
+    /* 온도 증감 로직 */
+    @Transactional
+    public double changeUserPoint(String username, int rate) {
+        User user = userRepository.findByUsername(username);
+
+        if (rate == 1) {
+            user.changePoint(user.getPoint() - 2);
+        } else if (rate == 2) {
+            user.changePoint(user.getPoint() - 1);
+        } else if (rate == 4) {
+            user.changePoint(user.getPoint() + 1);
+        } else if (rate == 5) {
+            user.changePoint(user.getPoint() + 2);
+        }
+
+        if (user.getPoint() > 100) {
+            user.changePoint(100);
+        } else if (user.getPoint() < 0) {
+            user.changePoint(0);
+        }
+
+        return user.getPoint();
     }
 }

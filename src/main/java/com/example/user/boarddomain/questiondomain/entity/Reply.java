@@ -28,7 +28,6 @@ public class Reply extends ReplyBaseTimeEntity {
     private QuestionPost questionPost;
 
     /* 답변 제목 */
-    @Column(nullable = false)
     private String title;
 
     /* 답변 본문 */
@@ -46,4 +45,16 @@ public class Reply extends ReplyBaseTimeEntity {
     /* 답변 이미지 */
     @OneToMany(mappedBy = "reply")
     private List<ReplyImage> images;
+
+    /* 답변 좋아요 증가 */
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    /* 답변 좋아요 감소 */
+    public void decreaseLikes() {
+        if (this.likes > 0) {
+            this.likes--;
+        }
+    }
 }

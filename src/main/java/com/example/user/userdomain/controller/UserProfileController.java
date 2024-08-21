@@ -31,11 +31,11 @@ public class UserProfileController {
     /* 닉네임 변경 */
     @Operation(summary = "닉네임 변경", description = "새로운 닉네임 설정")
     @PatchMapping("")
-    public String editNickname(@RequestBody UserInfoUpdateRequest userInfoUpdateRequest) {
+    public int editNickname(@RequestBody UserInfoUpdateRequest userInfoUpdateRequest) {
         if (userProfileService.changeNickname(userInfoUpdateRequest)) {
-            return "닉네임이 " + userInfoUpdateRequest.getNickname() + " 으로 변경되었습니다.";
+            return 1;
         }
-        return "이미 존재하는 닉네임입니다.";
+        return 0;
     }
 
     /* 프로필 사진 확인 */
@@ -55,5 +55,14 @@ public class UserProfileController {
     public ResponseEntity<String> changeProfileImage(@PathVariable("username") String username, @RequestParam("file") MultipartFile file) {
         String imageUrl = userProfileService.uploadProfileImage(username, file);
         return ResponseEntity.ok(imageUrl);
+    }
+
+    /* 유저 온도 변경 */
+    @Operation(summary = "유저 온도 변경", description = "유저 학번과 별 개수를 받아 온도를 조정합니다. 별 개수 1개 : -2, 별 개수 2개 : -1, 별 개수 3개 : 0, 별 개수 4개 : +1, 별 개수 5개 : +2")
+    @Parameter(name = "username", description = "온도를 조정할 유저의 학번을 입력합니다.")
+    @Parameter(name = "rate", description = "멘토 평가하기에서 받은 별 개수를 정수로 입력합니다.")
+    @PostMapping("/rate/{username}/{rate}")
+    public ResponseEntity<Double> changeUserPoint(@PathVariable("username") String username, @PathVariable("rate") Integer rate) {
+        return ResponseEntity.ok(userProfileService.changeUserPoint(username, rate));
     }
 }

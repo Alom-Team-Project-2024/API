@@ -2,9 +2,13 @@ package com.example.user.boarddomain.mentordomain.dto;
 
 import com.example.user.boarddomain.mentordomain.entity.Category;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
+@Builder
 public class MentorPostDTO {
 
     /* 글 제목 */

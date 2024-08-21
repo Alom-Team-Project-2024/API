@@ -46,8 +46,9 @@ public class QuestionPost extends QuestionPostBaseTimeEntity {
     private int likes;
 
     /* 스크랩 수 */
+    @Column(name = "scrap_count")
     @ColumnDefault("0")
-    private int clips;
+    private int scrapCount;
 
     /* 답변 수 */
     @ColumnDefault("0")
@@ -61,4 +62,27 @@ public class QuestionPost extends QuestionPostBaseTimeEntity {
     /* 업로드 된 이미지 */
     @OneToMany(mappedBy = "questionPost")
     private List<QuestionPostImage> images;
+
+
+    /* 게시글 좋아요 증가 */
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    /* 게시글 좋아요 감소 */
+    public void decreaseLikes() {
+        if (this.likes > 0) {
+            this.likes--;
+        }
+    }
+
+    /* 답변 수 동기화 */
+    public void synchronizedReplyCount() {
+        this.replyCount = this.getReplies().size();
+    }
+
+    /* 스크랩 수 증가 */
+    public void increaseScrapCount() {
+        this.scrapCount++;
+    }
 }
