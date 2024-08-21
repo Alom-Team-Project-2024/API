@@ -1,6 +1,7 @@
 package com.example.user.chatdomain.service;
 
 import com.example.user.chatdomain.dto.ChatRoomDTO;
+import com.example.user.chatdomain.dto.ChatRoomResponse;
 import com.example.user.chatdomain.entity.ChatRoom;
 import com.example.user.chatdomain.entity.UserChatRoom;
 import com.example.user.chatdomain.repository.ChatRoomRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,33 +30,34 @@ public class ChatRoomService {
 
     /* 전체 채팅방 조회 로직 */
     @Transactional
-    public List<ChatRoomDTO> getAllChatRooms() {
+    public List<ChatRoomResponse> getAllChatRooms() {
         return chatRoomRepository.findAll().stream()
-                .map(chatRoom -> new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt()))
+                .map(this::convertToChatRoomResponse)
                 .collect(Collectors.toList());
+
     }
 
     /* id 값으로 특정 채팅방 조회 로직 */
     @Transactional
-    public ChatRoomDTO getChatRoomById(Long id) {
+    public ChatRoomResponse getChatRoomById(Long id) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElseThrow();
-        return new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt());
 
+        return this.convertToChatRoomResponse(chatRoom);
     }
 
     /* 채팅방 이름으로 특정 채팅방 조회 로직 */
     @Transactional
-    public ChatRoomDTO getChatRoomByName(String name) {
+    public ChatRoomResponse getChatRoomByName(String name) {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByChatRoomName(name).orElseThrow();
-        return new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt());
+        return this.convertToChatRoomResponse(chatRoom);
     }
 
     /* 특정 유저가 참여중인 모든 채팅방 조회 로직 */
     @Transactional
-    public List<ChatRoomDTO> findRoomsByChatRoomName(String nickname) {
+    public List<ChatRoomResponse> findRoomsByChatRoomName(String nickname) {
 
         return chatRoomRepository.findAllByChatRoomName(nickname).stream()
-                .map(chatRoom -> new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt()))
+                .map(this::convertToChatRoomResponse)
                 .collect(Collectors.toList());
     }
 
@@ -80,5 +83,24 @@ public class ChatRoomService {
                 .chatRoom(chatRoom)
                 .build();
         userChatRoomRepository.save(userChatRoom);
+    }
+
+    private ChatRoomResponse convertToChatRoomResponse(ChatRoom chatRoom) {
+
+        // 채팅방에 속한 유저들을 가져오기
+        List<UserResponse> userResponseList = chatRoom.getUserChatRooms().stream()
+                .map(userChatRoom -> {
+                    User user = userChatRoom.getUser();
+                    return new UserResponse(user.getId(), user.getUsername(), user.getName(), user.getNickname(), user.getProfileImage(), user.getMajor(), user.getStudentCode(), user.getStudentGrade(), user.getRegistrationStatus(), user.getRole(), user.getPoint(), user.getCreatedAt(), user.getModifiedAt());
+                })
+                .collect(Collectors.toList());
+
+        return ChatRoomResponse.builder()
+                .id(chatRoom.getId())
+                .chatRoomName(chatRoom.getChatRoomName())
+                .userResponseList(userResponseList)
+                .createdAt(chatRoom.getCreatedAt())
+                .modifiedAt(chatRoom.getModifiedAt())
+                .build();
     }
 }

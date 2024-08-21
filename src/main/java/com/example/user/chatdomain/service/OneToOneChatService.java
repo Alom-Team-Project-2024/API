@@ -3,6 +3,7 @@ package com.example.user.chatdomain.service;
 import com.example.user.chatdomain.dto.ChatMessageDTO;
 import com.example.user.chatdomain.dto.ChatMessageResponse;
 import com.example.user.chatdomain.dto.ChatRoomDTO;
+import com.example.user.chatdomain.dto.ChatRoomResponse;
 import com.example.user.chatdomain.entity.ChatMessage;
 import com.example.user.chatdomain.entity.ChatRoom;
 import com.example.user.chatdomain.repository.ChatMessageRepository;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,11 +31,14 @@ public class OneToOneChatService {
 
     /* 1대1 채팅방 생성 */
     @Transactional
-    public ChatRoomDTO createChatRoomForUsers(String username1, String username2) {
+    public ChatRoomResponse createChatRoomForUsers(String username1, String username2) {
 
         UserResponse userResponse1 = sejongAuthService.findByUsername(username1);
         UserResponse userResponse2 = sejongAuthService.findByUsername(username2);
 
+        List<UserResponse> userResponseList = new ArrayList<>();
+        userResponseList.add(userResponse1);
+        userResponseList.add(userResponse2);
 
         String chatRoomName = userResponse1.getNickname() + "," + userResponse2.getNickname();
         ChatRoom chatRoom = chatRoomService.createChatRoom(chatRoomName);
@@ -41,7 +46,7 @@ public class OneToOneChatService {
         chatRoomService.addUserToChatRoom(userResponse1, chatRoom);
         chatRoomService.addUserToChatRoom(userResponse2, chatRoom);
 
-        return new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt());
+        return new ChatRoomResponse(chatRoom.getId(), chatRoom.getChatRoomName(), userResponseList, chatRoom.getCreatedAt(), chatRoom.getModifiedAt());
     }
 
     /* 1대1 채팅방에서 메시지 보내는 로직 */
