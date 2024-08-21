@@ -90,6 +90,12 @@ public class UserProfileService {
             user.changePoint(user.getPoint() + 2);
         }
 
+        if (user.getPoint() > 100) {
+            user.changePoint(100);
+        } else if (user.getPoint() < 0) {
+            user.changePoint(0);
+        }
+
         return user.getPoint();
     }
 }
