@@ -12,6 +12,7 @@ import com.example.user.userdomain.service.SejongAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,13 +28,14 @@ public class OneToOneChatService {
     private final ChatMessageRepository chatMessageRepository;
 
     /* 1대1 채팅방 생성 */
+    @Transactional
     public ChatRoomDTO createChatRoomForUsers(String username1, String username2) {
 
         UserResponse userResponse1 = sejongAuthService.findByUsername(username1);
         UserResponse userResponse2 = sejongAuthService.findByUsername(username2);
 
 
-        String chatRoomName = userResponse1.getNickname() + userResponse2.getNickname();
+        String chatRoomName = userResponse1.getNickname() + "," + userResponse2.getNickname();
         ChatRoom chatRoom = chatRoomService.createChatRoom(chatRoomName);
 
         chatRoomService.addUserToChatRoom(userResponse1, chatRoom);
@@ -43,6 +45,7 @@ public class OneToOneChatService {
     }
 
     /* 1대1 채팅방에서 메시지 보내는 로직 */
+    @Transactional
     public ChatMessage sendMessageToChatRoom(ChatMessageDTO chatMessageDTO) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatMessageDTO.getChatRoomId()).orElseThrow();
         ChatMessage chatMessage = ChatMessage.builder()
@@ -56,6 +59,7 @@ public class OneToOneChatService {
     }
 
     /* 특정 채팅방의 모든 메시지 조회 */
+    @Transactional
     public List<ChatMessageResponse> getMessagesFromChatRoom(Long chatRoomId) {
 
         List<ChatMessage> chatMessageList = chatMessageRepository.findAllByChatRoomId(chatRoomId);

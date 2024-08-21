@@ -1,6 +1,5 @@
 package com.example.user.boarddomain.questiondomain.dto;
 
-import com.example.user.boarddomain.questiondomain.entity.ReplyImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +12,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class ReplyResponse {
+
+    /* 답변 Id*/
+    @Schema(description = "답변 Id")
+    private Long id;
 
     /* 제목 */
     @Schema(description = "답변 제목")

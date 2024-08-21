@@ -11,6 +11,7 @@ import com.example.user.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class ChatRoomService {
     private final UserChatRoomRepository userChatRoomRepository;
 
     /* 전체 채팅방 조회 로직 */
+    @Transactional
     public List<ChatRoomDTO> getAllChatRooms() {
         return chatRoomRepository.findAll().stream()
                 .map(chatRoom -> new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt()))
@@ -33,6 +35,7 @@ public class ChatRoomService {
     }
 
     /* id 값으로 특정 채팅방 조회 로직 */
+    @Transactional
     public ChatRoomDTO getChatRoomById(Long id) {
         ChatRoom chatRoom = chatRoomRepository.findById(id).orElseThrow();
         return new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt());
@@ -40,12 +43,14 @@ public class ChatRoomService {
     }
 
     /* 채팅방 이름으로 특정 채팅방 조회 로직 */
+    @Transactional
     public ChatRoomDTO getChatRoomByName(String name) {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByChatRoomName(name).orElseThrow();
         return new ChatRoomDTO(chatRoom.getChatRoomName(), chatRoom.getCreatedAt(), chatRoom.getModifiedAt());
     }
 
     /* 특정 유저가 참여중인 모든 채팅방 조회 로직 */
+    @Transactional
     public List<ChatRoomDTO> findRoomsByChatRoomName(String nickname) {
 
         return chatRoomRepository.findAllByChatRoomName(nickname).stream()
@@ -55,6 +60,7 @@ public class ChatRoomService {
 
     /* 새로운 채팅방 만들기 */
     /* 추후 1대1 채팅방 service에서 해당 메서드 사용하여 채팅방 이름 설정 */
+    @Transactional
     public ChatRoom createChatRoom(String name) {
         ChatRoom chatRoom = ChatRoom.builder()
                 .chatRoomName(name)
@@ -65,6 +71,7 @@ public class ChatRoomService {
 
     /* UserChatRoom에 새로운 유저 추가 */
     /* 추후 1대1 채팅방 service에서 해당 메서드 사용하여 채팅방에 user 넣어줌 */
+    @Transactional
     public void addUserToChatRoom(UserResponse userResponse, ChatRoom chatRoom) {
         User user = userRepository.findByUsername(userResponse.getUsername());
 

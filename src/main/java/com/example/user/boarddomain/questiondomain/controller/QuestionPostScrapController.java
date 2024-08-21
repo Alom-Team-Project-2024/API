@@ -3,6 +3,7 @@ package com.example.user.boarddomain.questiondomain.controller;
 import com.example.user.boarddomain.questiondomain.dto.QuestionPostDTO;
 import com.example.user.boarddomain.questiondomain.service.QuestionPostScrapService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Question-Post")
 public class QuestionPostScrapController {
 
     private final QuestionPostScrapService questionPostScrapService;
@@ -24,12 +26,5 @@ public class QuestionPostScrapController {
     public ResponseEntity<Integer> questionPostScrap(@PathVariable("username") String username, @PathVariable("post_id") Long post_id) {
         Integer scrapCount = questionPostScrapService.postScrap(username, post_id);
         return ResponseEntity.ok(scrapCount);
-    }
-
-    /* 내가 스크랩 한 글 조회 */
-    @Operation(summary = "내가 스크랩 한 질문 게시판 글", description = "내가 스크랩 한 질문 게시판 글을 모두 조회합니다.")
-    @GetMapping("/users/question_post/scrap/{username}")
-    public List<QuestionPostDTO> getMyQuestionPostList(@PathVariable("username") String username) {
-        return questionPostScrapService.getMyScrapList(username);
     }
 }

@@ -1,15 +1,11 @@
 package com.example.user.boarddomain.questiondomain.dto;
 
-import com.example.user.boarddomain.questiondomain.entity.QuestionPostImage;
-import com.example.user.boarddomain.questiondomain.entity.Reply;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Lob;
-import jdk.jshell.execution.JdiExecutionControl;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 public class QuestionPostResponse {
+
+    /* 글 Id */
+    @Schema(description = "글 Id")
+    private Long id;
 
     /* 제목 (과목명) */
     @Schema(description = "글 제목(과목명)")

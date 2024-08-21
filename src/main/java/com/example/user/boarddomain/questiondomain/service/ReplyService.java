@@ -26,6 +26,7 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
 
     /* 답변 저장 */
+    @Transactional
     public Reply saveReply(@ModelAttribute ReplyDTO replyDTO, Long post_id) {
         QuestionPost questionPost = questionPostRepository.findById(post_id).orElseThrow(NullPointerException::new);
 
@@ -77,6 +78,7 @@ public class ReplyService {
                 .collect(Collectors.toList());
 
         return ReplyResponse.builder()
+                .id(reply.getId())
                 .title(reply.getTitle())
                 .text(reply.getText())
                 .writer(reply.getWriter())

@@ -1,16 +1,14 @@
 package com.example.user.boarddomain.questiondomain.service;
 
 import com.example.user.boarddomain.questiondomain.dto.ReplyImageDTO;
-import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
-import com.example.user.boarddomain.questiondomain.entity.QuestionPostImage;
 import com.example.user.boarddomain.questiondomain.entity.Reply;
 import com.example.user.boarddomain.questiondomain.entity.ReplyImage;
 import com.example.user.boarddomain.questiondomain.repository.ReplyImageRepository;
 import com.example.user.boarddomain.questiondomain.repository.ReplyRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -33,6 +31,7 @@ public class ReplyImageService {
     private final ReplyImageRepository replyImageRepository;
 
     /* 답변 이미지 등록 로직 */
+    @Transactional
     public List<ReplyImageDTO> saveImage(List<MultipartFile> files, Long id) throws IOException {
         Reply reply = replyRepository.findById(id).orElseThrow();
 
@@ -55,6 +54,7 @@ public class ReplyImageService {
     }
 
     /* 답변 이미지 조회 로직 */
+    @Transactional
     public List<ReplyImageDTO> getAllImages(Long id) {
         Reply reply = replyRepository.findById(id).orElseThrow();
         return reply.getImages().stream()

@@ -28,7 +28,6 @@ public class Reply extends ReplyBaseTimeEntity {
     private QuestionPost questionPost;
 
     /* 답변 제목 */
-    @Column(nullable = false)
     private String title;
 
     /* 답변 본문 */

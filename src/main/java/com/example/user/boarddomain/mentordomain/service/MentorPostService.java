@@ -41,16 +41,7 @@ public class MentorPostService {
 
         mentorPostRepository.save(mentorPost);
 
-        return MentorPostResponse.builder()
-                .category(mentorPost.getCategory())
-                .title(mentorPostDTO.getTitle())
-                .text(mentorPostDTO.getText())
-                .writer(mentorPost.getWriter())
-                .major(mentorPost.getMajor())
-                .likes(mentorPost.getLikes())
-                .createdAt(mentorPost.getCreatedAt())
-                .modifiedAt(mentorPost.getModifiedAt())
-                .build();
+        return this.convertToMentorPostResponse(mentorPost);
     }
 
     /* 구인 게시판 전체 글 조회 로직(카테고리 상관 X) */
@@ -59,16 +50,7 @@ public class MentorPostService {
         List<MentorPost> mentorPosts = mentorPostRepository.findAll();
 
         return mentorPosts.stream()
-                .map(mentorPost -> MentorPostResponse.builder()
-                        .category(mentorPost.getCategory())
-                        .title(mentorPost.getTitle())
-                        .text(mentorPost.getText())
-                        .writer(mentorPost.getWriter())
-                        .major(mentorPost.getMajor())
-                        .likes(mentorPost.getLikes())
-                        .createdAt(mentorPost.getCreatedAt())
-                        .modifiedAt(mentorPost.getModifiedAt())
-                        .build())
+                .map(this::convertToMentorPostResponse)
                 .collect(Collectors.toList());
     }
 
@@ -78,16 +60,7 @@ public class MentorPostService {
         List<MentorPost> mentorPosts = mentorPostRepository.findMentorPostsByWriter(username);
 
         return mentorPosts.stream()
-                .map(mentorPost -> MentorPostResponse.builder()
-                        .category(mentorPost.getCategory())
-                        .title(mentorPost.getTitle())
-                        .text(mentorPost.getText())
-                        .writer(mentorPost.getWriter())
-                        .major(mentorPost.getMajor())
-                        .likes(mentorPost.getLikes())
-                        .createdAt(mentorPost.getCreatedAt())
-                        .modifiedAt(mentorPost.getModifiedAt())
-                        .build())
+                .map(this::convertToMentorPostResponse)
                 .collect(Collectors.toList());
     }
 
@@ -95,23 +68,14 @@ public class MentorPostService {
     @Transactional
     public MentorPostResponse findPostById(Long id) {
         MentorPost mentorPost = mentorPostRepository.findById(id).orElseThrow();
-        return new MentorPostResponse(mentorPost.getCategory(), mentorPost.getTitle(), mentorPost.getText(), mentorPost.getWriter(), mentorPost.getMajor(), mentorPost.getLikes(), mentorPost.getCreatedAt(), mentorPost.getModifiedAt());
+        return this.convertToMentorPostResponse(mentorPost);
     }
 
     /* 게시글 제목을 통한 특정 글 조회 로직 */
     @Transactional
     public List<MentorPostResponse> findPostByTitle(String title) {
         return mentorPostRepository.findMentorPostsByTitle(title).stream()
-                .map(mentorPost -> MentorPostResponse.builder()
-                        .category(mentorPost.getCategory())
-                        .title(mentorPost.getTitle())
-                        .text(mentorPost.getText())
-                        .writer(mentorPost.getWriter())
-                        .major(mentorPost.getMajor())
-                        .likes(mentorPost.getLikes())
-                        .createdAt(mentorPost.getCreatedAt())
-                        .modifiedAt(mentorPost.getModifiedAt())
-                        .build())
+                .map(this::convertToMentorPostResponse)
                 .collect(Collectors.toList());
     }
 
@@ -119,16 +83,7 @@ public class MentorPostService {
     @Transactional
     public List<MentorPostResponse> findPostsByCategory(Category category) {
         return mentorPostRepository.findMentorPostsByCategory(category).stream()
-                .map(mentorPost -> MentorPostResponse.builder()
-                        .category(mentorPost.getCategory())
-                        .title(mentorPost.getTitle())
-                        .text(mentorPost.getText())
-                        .writer(mentorPost.getWriter())
-                        .major(mentorPost.getMajor())
-                        .likes(mentorPost.getLikes())
-                        .createdAt(mentorPost.getCreatedAt())
-                        .modifiedAt(mentorPost.getModifiedAt())
-                        .build())
+                .map(this::convertToMentorPostResponse)
                 .collect(Collectors.toList());
     }
 
@@ -136,5 +91,19 @@ public class MentorPostService {
     @Transactional
     public void deletePost(Long id) {
         mentorPostRepository.deleteById(id);
+    }
+
+    private MentorPostResponse convertToMentorPostResponse(MentorPost mentorPost) {
+        return MentorPostResponse.builder()
+                .id(mentorPost.getId())
+                .category(mentorPost.getCategory())
+                .title(mentorPost.getTitle())
+                .text(mentorPost.getText())
+                .writer(mentorPost.getWriter())
+                .major(mentorPost.getMajor())
+                .likes(mentorPost.getLikes())
+                .createdAt(mentorPost.getCreatedAt())
+                .modifiedAt(mentorPost.getModifiedAt())
+                .build();
     }
 }

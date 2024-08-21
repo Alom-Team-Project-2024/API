@@ -10,6 +10,7 @@ import com.example.user.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class QuestionPostScrapService {
     private final QuestionPostScrapRepository questionPostScrapRepository;
 
     /* 질문게시글 스크랩 등록 로직 */
+    @Transactional
     public Integer postScrap(String username, Long post_id) {
         User user = userRepository.findByUsername(username);
         QuestionPost questionPost = questionPostRepository.findById(post_id).orElseThrow();
@@ -39,6 +41,7 @@ public class QuestionPostScrapService {
     }
 
     /* 내가 스크랩 한 질문 글 조회 로직 */
+    @Transactional
     public List<QuestionPostDTO> getMyScrapList(String username) {
         User user = userRepository.findByUsername(username);
         List<QuestionPost> questionPostList = questionPostScrapRepository.findAllByUser(user);

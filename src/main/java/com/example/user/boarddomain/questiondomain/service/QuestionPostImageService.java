@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class QuestionPostImageService {
     private final QuestionPostRepository questionPostRepository;
 
     /* 질문 게시판 이미지 저장 로직 */
+    @Transactional
     public List<QuestionPostImageDTO> saveImage(List<MultipartFile> files, Long id) throws IOException {
         QuestionPost questionPost = questionPostRepository.findById(id).orElseThrow();
 
@@ -43,7 +45,7 @@ public class QuestionPostImageService {
             Files.createDirectories(uploadPath);
         }
 
-        for(MultipartFile file : files) {
+        for (MultipartFile file : files) {
             Path copyLocation = Paths.get(uploadDir + "/" + file.getOriginalFilename());
             Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
 
@@ -59,11 +61,12 @@ public class QuestionPostImageService {
     }
 
     /* 질문 게시글에 등록된 이미지 조회 */
+    @Transactional
     public List<QuestionPostImageDTO> getAllImages(Long id) {
         QuestionPost questionPost = questionPostRepository.findById(id).orElseThrow();
 
         return questionPost.getImages().stream()
-                        .map(questionPostImage -> new QuestionPostImageDTO(questionPostImage.getImageUrl()))
-                                .collect(Collectors.toList());
+                .map(questionPostImage -> new QuestionPostImageDTO(questionPostImage.getImageUrl()))
+                .collect(Collectors.toList());
     }
 }

@@ -16,6 +16,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MentorPostResponse {
 
+    /* 구인 게시판 글 Id */
+    @Schema(description = "구인 게시판 글 Id")
+    private Long id;
+
     /* 글 카테고리 (멘토 구해요 / 멘티 구해요) */
     @Schema(description = "글 카테고리 (멘토 구해요 / 멘티 구해요)")
     private Category category;

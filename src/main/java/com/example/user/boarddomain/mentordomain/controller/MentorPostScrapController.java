@@ -4,6 +4,7 @@ import com.example.user.boarddomain.mentordomain.dto.MentorPostDTO;
 import com.example.user.boarddomain.mentordomain.service.MentorPostScrapService;
 import com.example.user.boarddomain.mentordomain.service.MentorPostService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Mentor-Post")
 public class MentorPostScrapController {
 
     private final MentorPostScrapService mentorPostScrapService;
@@ -27,10 +29,4 @@ public class MentorPostScrapController {
         return ResponseEntity.ok(scrapCount);
     }
 
-    /* 내가 스크랩 한 구인 글 조회 */
-    @Operation(summary = "내가 스크랩 한 구인 게시판 글", description = "내가 스크랩 한 구인 게시판 글을 모두 조회합니다.")
-    @GetMapping("/users/mentor_post/scrap/{username}")
-    public List<MentorPostDTO> getMyMentorPostList(@PathVariable("username") String username) {
-        return mentorPostScrapService.getMyScrapList(username);
-    }
 }
