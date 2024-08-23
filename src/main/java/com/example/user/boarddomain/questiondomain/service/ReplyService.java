@@ -32,7 +32,6 @@ public class ReplyService {
 
         Reply reply = Reply.builder()
                 .questionPost(questionPost)
-                .title(replyDTO.getTitle())
                 .text(replyDTO.getText())
                 .writer(SecurityContextHolder.getContext().getAuthentication().getName())
                 .build();
@@ -79,7 +78,6 @@ public class ReplyService {
 
         return ReplyResponse.builder()
                 .id(reply.getId())
-                .title(reply.getTitle())
                 .text(reply.getText())
                 .writer(reply.getWriter())
                 .likes(reply.getLikes())

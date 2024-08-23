@@ -46,10 +46,13 @@ dependencies {
     // WebSocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.webjars:stomp-websocket:2.3.3-1'
+    implementation 'org.webjars:sockjs-client:1.1.2'
+    implementation 'org.webjars:stomp-websocket:2.3.4'
+    implementation 'com.google.code.gson:gson:2.9.0'
+
     implementation 'org.springframework.boot:spring-boot-starter-freemarker'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation 'org.webjars.bower:bootstrap:4.3.1'
-    implementation 'org.webjars:sockjs-client:1.1.2'
 }
 
 tasks.named('test') {

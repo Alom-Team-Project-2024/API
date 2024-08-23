@@ -1,19 +1,12 @@
 package com.example.user.userdomain.controller;
 
 import com.example.user.userdomain.dto.UserInfoUpdateRequest;
-import com.example.user.userdomain.entity.User;
-import com.example.user.userdomain.repository.UserRepository;
-import com.example.user.userdomain.service.SejongAuthService;
 import com.example.user.userdomain.service.UserProfileService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +29,13 @@ public class UserProfileController {
             return 1;
         }
         return 0;
+    }
+
+    /* 닉네임 중복 확인 */
+    @Operation(summary = "닉네임 중복 확인", description = "닉네임을 전송하면 해당 닉네임이 사용가능한지 반환합니다. true면 사용가능, false이면 중복된 닉네임입니다.")
+    @PostMapping("/duplicate/{nickname}")
+    public boolean isDuplicateNickname(@PathVariable("nickname") String nickname) {
+        return userProfileService.duplicateNickname(nickname);
     }
 
     /* 프로필 사진 확인 */

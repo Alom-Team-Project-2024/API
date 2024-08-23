@@ -6,9 +6,6 @@ import com.example.user.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +43,12 @@ public class UserProfileService {
         log.info("현재 user의 닉네임은 " + userRepository.findByUsername("22011315").getNickname() + " 입니다.");
         return true;
 
+    }
+
+    /* 중복 닉네임 확인 로직 */
+    @Transactional
+    public boolean duplicateNickname(String nickname) {
+        return !userRepository.existsByNickname(nickname);
     }
 
     /* 프로필 변경 */

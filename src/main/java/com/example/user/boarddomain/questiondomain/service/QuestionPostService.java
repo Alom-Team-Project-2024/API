@@ -126,7 +126,7 @@ public class QuestionPostService {
 
     private static List<ReplyDTO> getReplyDTOS(QuestionPost questionPost) {
         return questionPost.getReplies().stream()
-                .map(reply -> new ReplyDTO(reply.getTitle(), reply.getText()))
+                .map(reply -> new ReplyDTO(reply.getText()))
                 .collect(Collectors.toList());
     }
 

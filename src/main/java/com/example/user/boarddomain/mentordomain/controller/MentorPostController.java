@@ -3,7 +3,6 @@ package com.example.user.boarddomain.mentordomain.controller;
 import com.example.user.boarddomain.mentordomain.dto.MentorPostDTO;
 import com.example.user.boarddomain.mentordomain.dto.MentorPostResponse;
 import com.example.user.boarddomain.mentordomain.entity.Category;
-import com.example.user.boarddomain.mentordomain.entity.MentorPost;
 import com.example.user.boarddomain.mentordomain.service.MentorPostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
