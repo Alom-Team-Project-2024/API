@@ -7,6 +7,8 @@ import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
 import com.example.user.boarddomain.questiondomain.entity.Reply;
 import com.example.user.boarddomain.questiondomain.repository.QuestionPostRepository;
 import com.example.user.boarddomain.questiondomain.repository.ReplyRepository;
+import com.example.user.userdomain.entity.User;
+import com.example.user.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,16 +26,19 @@ public class ReplyService {
 
     private final QuestionPostRepository questionPostRepository;
     private final ReplyRepository replyRepository;
+    private final UserRepository userRepository;
 
     /* 답변 저장 */
     @Transactional
     public Reply saveReply(@ModelAttribute ReplyDTO replyDTO, Long post_id) {
         QuestionPost questionPost = questionPostRepository.findById(post_id).orElseThrow(NullPointerException::new);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username);
 
         Reply reply = Reply.builder()
                 .questionPost(questionPost)
                 .text(replyDTO.getText())
-                .writer(SecurityContextHolder.getContext().getAuthentication().getName())
+                .writer(user.getNickname())
                 .build();
 
         Reply savedReply = replyRepository.save(reply);

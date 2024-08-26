@@ -36,7 +36,7 @@ public class QuestionPostService {
                 .user(user)
                 .subject(questionPostDTO.getSubject())
                 .text(questionPostDTO.getText())
-                .writer(username)
+                .writer(user.getNickname())
                 .build();
 
         return questionPostRepository.save(questionPost);

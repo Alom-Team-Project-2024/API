@@ -1,8 +1,6 @@
 package com.example.user.chatdomain.controller;
 
-import com.example.user.chatdomain.dto.ChatRoomDTO;
 import com.example.user.chatdomain.dto.ChatRoomResponse;
-import com.example.user.chatdomain.entity.ChatRoom;
 import com.example.user.chatdomain.service.ChatRoomService;
 import com.example.user.chatdomain.service.OneToOneChatService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,10 +42,10 @@ public class ChatRoomController {
     }
 
     /* 새로운 채팅방 생성 */
-    @Operation(summary = "새로운 채팅방 생성", description = "학번 2개를 받아 새로운 채팅방을 생성합니다.")
+    @Operation(summary = "새로운 채팅방 생성", description = "닉네임 2개를 받아 새로운 채팅방을 생성합니다.")
     @PostMapping("")
-    public ResponseEntity<ChatRoomResponse> createChat(String username1, String username2) {
-        ChatRoomResponse chatRoomResponse = oneToOneChatService.createChatRoomForUsers(username1, username2);
+    public ResponseEntity<ChatRoomResponse> createChat(String nickname1, String nickname2) {
+        ChatRoomResponse chatRoomResponse = oneToOneChatService.createChatRoomForUsers(nickname1, nickname2);
         return ResponseEntity.ok(chatRoomResponse);
     }
 

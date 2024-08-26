@@ -1,6 +1,6 @@
 package com.example.user.boarddomain.mentordomain.service;
 
-import com.example.user.boarddomain.mentordomain.dto.MentorPostDTO;
+import com.example.user.boarddomain.mentordomain.dto.MentorPostResponse;
 import com.example.user.boarddomain.mentordomain.entity.MentorPost;
 import com.example.user.boarddomain.mentordomain.entity.MentorPostScrap;
 import com.example.user.boarddomain.mentordomain.repository.MentorPostRepository;
@@ -42,12 +42,26 @@ public class MentorPostScrapService {
 
     /* 내가 스크랩 한 구인 글 조회 로직 */
     @Transactional
-    public List<MentorPostDTO> getMyScrapList(String username) {
+    public List<MentorPostResponse> getMyScrapList(String username) {
         User user = userRepository.findByUsername(username);
         List<MentorPost> mentorPostList = mentorPostScrapRepository.findAllByUser(user);
 
         return mentorPostList.stream()
-                .map(mentorPost -> new MentorPostDTO(mentorPost.getTitle(), mentorPost.getText(), mentorPost.getCategory()))
+                .map(this::convertToMentorPostResponse)
                 .collect(Collectors.toList());
+    }
+
+    private MentorPostResponse convertToMentorPostResponse(MentorPost mentorPost) {
+        return MentorPostResponse.builder()
+                .id(mentorPost.getId())
+                .category(mentorPost.getCategory())
+                .title(mentorPost.getTitle())
+                .text(mentorPost.getText())
+                .writer(mentorPost.getWriter())
+                .major(mentorPost.getMajor())
+                .likes(mentorPost.getLikes())
+                .createdAt(mentorPost.getCreatedAt())
+                .modifiedAt(mentorPost.getModifiedAt())
+                .build();
     }
 }

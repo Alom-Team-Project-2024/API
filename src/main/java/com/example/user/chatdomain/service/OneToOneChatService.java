@@ -2,7 +2,6 @@ package com.example.user.chatdomain.service;
 
 import com.example.user.chatdomain.dto.ChatMessageDTO;
 import com.example.user.chatdomain.dto.ChatMessageResponse;
-import com.example.user.chatdomain.dto.ChatRoomDTO;
 import com.example.user.chatdomain.dto.ChatRoomResponse;
 import com.example.user.chatdomain.entity.ChatMessage;
 import com.example.user.chatdomain.entity.ChatRoom;
@@ -31,10 +30,10 @@ public class OneToOneChatService {
 
     /* 1대1 채팅방 생성 */
     @Transactional
-    public ChatRoomResponse createChatRoomForUsers(String username1, String username2) {
+    public ChatRoomResponse createChatRoomForUsers(String nickname1, String nickname2) {
 
-        UserResponse userResponse1 = sejongAuthService.findByUsername(username1);
-        UserResponse userResponse2 = sejongAuthService.findByUsername(username2);
+        UserResponse userResponse1 = sejongAuthService.findByNickname(nickname1);
+        UserResponse userResponse2 = sejongAuthService.findByNickname(nickname2);
 
         List<UserResponse> userResponseList = new ArrayList<>();
         userResponseList.add(userResponse1);

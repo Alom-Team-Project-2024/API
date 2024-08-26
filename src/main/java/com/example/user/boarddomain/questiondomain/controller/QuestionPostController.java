@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,10 +49,10 @@ public class QuestionPostController {
 
     /* 작성자를 통한 글 조회 */
     @Operation(summary = "작성자 글 조회", description = "특정 유저가 작성한 모든 글을 확인합니다.")
-    @Parameter(name = "username", description = "학번")
-    @GetMapping("username/{username}")
-    public List<QuestionPostResponse> getPostsByUsername(@PathVariable("username") String username) {
-        return questionPostService.findPostsByUsername(username);
+    @Parameter(name = "nickname", description = "닉네임")
+    @GetMapping("writer/{nickname}")
+    public List<QuestionPostResponse> getPostsByUsername(@PathVariable("nickname") String nickname) {
+        return questionPostService.findPostsByUsername(nickname);
     }
 
     /* 수업명을 통한 글 조회 */

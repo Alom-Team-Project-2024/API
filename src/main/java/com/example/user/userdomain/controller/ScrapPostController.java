@@ -1,8 +1,8 @@
 package com.example.user.userdomain.controller;
 
-import com.example.user.boarddomain.mentordomain.dto.MentorPostDTO;
+import com.example.user.boarddomain.mentordomain.dto.MentorPostResponse;
 import com.example.user.boarddomain.mentordomain.service.MentorPostScrapService;
-import com.example.user.boarddomain.questiondomain.dto.QuestionPostDTO;
+import com.example.user.boarddomain.questiondomain.dto.QuestionPostResponse;
 import com.example.user.boarddomain.questiondomain.service.QuestionPostScrapService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,14 +24,14 @@ public class ScrapPostController {
     /* 내가 스크랩 한 질문 게시판 글 조회 */
     @Operation(summary = "내가 스크랩 한 질문 게시판 글", description = "내가 스크랩 한 질문 게시판 글을 모두 조회합니다.")
     @GetMapping("/users/question_post/scrap/{username}")
-    public List<QuestionPostDTO> getMyQuestionPostList(@PathVariable("username") String username) {
+    public List<QuestionPostResponse> getMyQuestionPostList(@PathVariable("username") String username) {
         return questionPostScrapService.getMyScrapList(username);
     }
 
     /* 내가 스크랩 한 구인 글 조회 */
     @Operation(summary = "내가 스크랩 한 구인 게시판 글", description = "내가 스크랩 한 구인 게시판 글을 모두 조회합니다.")
     @GetMapping("/users/mentor_post/scrap/{username}")
-    public List<MentorPostDTO> getMyMentorPostList(@PathVariable("username") String username) {
+    public List<MentorPostResponse> getMyMentorPostList(@PathVariable("username") String username) {
         return mentorPostScrapService.getMyScrapList(username);
     }
 }

@@ -37,9 +37,9 @@ public class MentorPostController {
     /* 특정 사용자가 구인 게시판에 작성한 모든 글 조회 */
     @Operation(summary = "작성자를 통한 구인 게시판 글 조회", description = "특정 유저가 작성한 글을 조회합니다.(카테고리 상관 없이 조회)")
     @Parameter(name = "username", description = "작성자 검색을 위해 String 형식의 username 입력")
-    @GetMapping("/username/{username}")
-    public List<MentorPostResponse> getPostsByWriter(@PathVariable("username") String username) {
-        return mentorPostService.findPostsByWriter(username);
+    @GetMapping("/writer/{nickname}")
+    public List<MentorPostResponse> getPostsByWriter(@PathVariable("nickname") String nickname) {
+        return mentorPostService.findPostsByWriter(nickname);
     }
 
     /* 특정 글 조회(글 고유 id 조회) */

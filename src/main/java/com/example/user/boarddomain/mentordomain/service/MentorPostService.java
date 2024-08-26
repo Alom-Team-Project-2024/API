@@ -35,7 +35,7 @@ public class MentorPostService {
                 .category(mentorPostDTO.getCategory())
                 .title(mentorPostDTO.getTitle())
                 .text(mentorPostDTO.getText())
-                .writer(username)
+                .writer(user.getNickname())
                 .major(user.getMajor())
                 .build();
 

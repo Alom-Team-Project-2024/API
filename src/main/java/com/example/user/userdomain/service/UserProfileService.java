@@ -80,8 +80,8 @@ public class UserProfileService {
 
     /* 온도 증감 로직 */
     @Transactional
-    public double changeUserPoint(String username, int rate) {
-        User user = userRepository.findByUsername(username);
+    public double changeUserPoint(String nickname, int rate) {
+        User user = userRepository.findByNickname(nickname);
 
         if (rate == 1) {
             user.changePoint(user.getPoint() - 2);
