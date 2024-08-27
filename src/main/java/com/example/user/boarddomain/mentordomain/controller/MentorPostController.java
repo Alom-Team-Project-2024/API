@@ -23,7 +23,7 @@ public class MentorPostController {
     /* 구인 게시판에 글 등록 */
     @Operation(summary = "구인 게시판 글 등록", description = "구인 게시판에 글을 등록합니다.")
     @PostMapping("")
-    public MentorPostResponse post(@ModelAttribute MentorPostDTO mentorPostDTO) {
+    public MentorPostResponse post(@RequestBody MentorPostDTO mentorPostDTO) {
         return mentorPostService.savePost(mentorPostDTO);
     }
 

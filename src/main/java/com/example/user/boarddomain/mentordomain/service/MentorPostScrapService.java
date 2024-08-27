@@ -44,7 +44,11 @@ public class MentorPostScrapService {
     @Transactional
     public List<MentorPostResponse> getMyScrapList(String username) {
         User user = userRepository.findByUsername(username);
-        List<MentorPost> mentorPostList = mentorPostScrapRepository.findAllByUser(user);
+        List<MentorPostScrap> mentorPostScrapList = mentorPostScrapRepository.findAllByUser(user);
+
+        List<MentorPost> mentorPostList = mentorPostScrapList.stream()
+                .map(MentorPostScrap::getMentorPost)
+                .toList();
 
         return mentorPostList.stream()
                 .map(this::convertToMentorPostResponse)

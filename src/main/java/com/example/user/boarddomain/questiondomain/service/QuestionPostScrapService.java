@@ -46,7 +46,11 @@ public class QuestionPostScrapService {
     @Transactional
     public List<QuestionPostResponse> getMyScrapList(String username) {
         User user = userRepository.findByUsername(username);
-        List<QuestionPost> questionPostList = questionPostScrapRepository.findAllByUser(user);
+        List<QuestionPostScrap> allByUser = questionPostScrapRepository.findAllByUser(user);
+
+        List<QuestionPost> questionPostList = allByUser.stream()
+                .map(QuestionPostScrap::getQuestionPost)
+                .toList();
 
         return questionPostList.stream()
                 .map(this::convertToResponse)
