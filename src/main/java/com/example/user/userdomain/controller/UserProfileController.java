@@ -7,10 +7,16 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Slf4j
 @RestController
@@ -42,19 +48,19 @@ public class UserProfileController {
     @Operation(summary = "프로필 사진", description = "유저 프로필 사진 확인")
     @Parameter(name = "username", description = "학번")
     @GetMapping("/{username}/profile-image")
-    public ResponseEntity<String> getProfileImage(@PathVariable("username") String username) {
-        String userProfileImage = userProfileService.getUserProfileImage(username);
-        return ResponseEntity.ok(userProfileImage);
+    public ResponseEntity<Resource> getProfileImage(@PathVariable("username") String username) {
+        Resource file = userProfileService.getUserProfileImage(username);
+        return getResourceResponseEntity(file);
     }
-
 
     /* 프로필 사진 변경 */
     @Operation(summary = "프로필 사진 변경", description = "새로운 프로필 사진으로 변경")
     @Parameter(name = "username", description = "학번")
     @PostMapping(value = "/{username}/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> changeProfileImage(@PathVariable("username") String username, @RequestParam("file") MultipartFile file) {
-        String imageUrl = userProfileService.uploadProfileImage(username, file);
-        return ResponseEntity.ok(imageUrl);
+    public ResponseEntity<Resource> changeProfileImage(@PathVariable("username") String username, @RequestParam("file") MultipartFile file) {
+        Resource savedFile = userProfileService.uploadProfileImage(username, file);
+
+        return getResourceResponseEntity(savedFile);
     }
 
     /* 유저 온도 변경 */
@@ -64,5 +70,20 @@ public class UserProfileController {
     @PostMapping("/rate/{nickname}/{rate}")
     public ResponseEntity<Double> changeUserPoint(@PathVariable("nickname") String nickname, @PathVariable("rate") Integer rate) {
         return ResponseEntity.ok(userProfileService.changeUserPoint(nickname, rate));
+    }
+
+    private static ResponseEntity<Resource> getResourceResponseEntity(Resource file) {
+        String contentType = "application/octet-stream";
+
+        try {
+            contentType = Files.probeContentType(Paths.get(file.getFilename()));
+        } catch (IOException e) {
+            log.warn("파일의 Content-Type을 결정할 수 없습니다: " + e.getMessage());
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"")
+                .body(file);
     }
 }

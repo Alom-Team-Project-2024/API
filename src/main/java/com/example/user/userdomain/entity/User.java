@@ -1,13 +1,10 @@
 package com.example.user.userdomain.entity;
 
-import com.example.user.chatdomain.entity.UserChatRoom;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.util.Set;
 
 @Slf4j
 @Entity

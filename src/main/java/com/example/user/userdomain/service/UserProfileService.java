@@ -6,15 +6,19 @@ import com.example.user.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -53,29 +57,52 @@ public class UserProfileService {
 
     /* 프로필 변경 */
     @Transactional
-    public String uploadProfileImage(String username, MultipartFile file) {
+    public Resource uploadProfileImage(String username, MultipartFile file) {
         User user = userRepository.findByUsername(username);
 
         try {
-            Path filePath = Paths.get(uploadDir, file.getOriginalFilename());
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            // 파일 이름을 UUID로 대체
+            String originalFilename = file.getOriginalFilename();
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf('.'));
+            String uuidFilename = UUID.randomUUID() + fileExtension;
 
-            String imageUrl = "/static/images/" + file.getOriginalFilename();
-            user.changeProfileImage(imageUrl);
+            Path filePath = Paths.get(uploadDir, uuidFilename);
 
-            return imageUrl;
+            // try-with-resources를 사용하여 파일 스트림을 자동으로 닫음
+            try (var inputStream = file.getInputStream()) {
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            // 저장된 파일 경로를 사용자 엔티티에 저장
+            String imageUrl = filePath.toString();
+            user.changeProfileImage(imageUrl); // 원본 파일 이름도 함께 저장
+
+            return new UrlResource(filePath.toUri());
         } catch (IOException e) {
-            throw new RuntimeException("Failed to store file", e);
+            throw new RuntimeException("파일 저장에 실패했습니다.", e);
         }
     }
 
     /* 프로필 확인 */
     @Transactional
-    public String getUserProfileImage(String username) {
+    public Resource getUserProfileImage(String username) {
         log.info("프로필 확인 서비스");
         User user = userRepository.findByUsername(username);
 
-        return user.getProfileImage();
+        try {
+            String filename = user.getProfileImage(); // 저장된 파일 경로
+            Path file = Paths.get(filename); // 경로에서 파일을 참조
+            Resource resource = new UrlResource(file.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("파일이 존재하지 않거나 읽을 수 없습니다: " + filename);
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("파일 경로가 잘못되었습니다: " + e.getMessage(), e);
+        }
+
     }
 
     /* 온도 증감 로직 */
