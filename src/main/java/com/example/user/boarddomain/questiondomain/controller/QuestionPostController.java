@@ -48,17 +48,25 @@ public class QuestionPostController {
     }
 
     /* 작성자를 통한 글 조회 */
-    @Operation(summary = "작성자 글 조회", description = "특정 유저가 작성한 모든 글을 확인합니다.")
+    @Operation(summary = "작성자 글 조회", description = "유저 닉네임을 파라미터로 받아 해당 유저가 작성한 모든 질문 글을 조회합니다.")
     @Parameter(name = "nickname", description = "닉네임")
-    @GetMapping("writer/{nickname}")
+    @GetMapping("/writer/{nickname}")
     public List<QuestionPostResponse> getPostsByUsername(@PathVariable("nickname") String nickname) {
         return questionPostService.findPostsByUsername(nickname);
+    }
+
+    /* 유저 id를 통한 작성 글 조회 */
+    @Operation(summary = "유저 Id를 통한 작성 글 조회", description = "유저 Id를 파라미터로 받아 해당 유저가 작성한 모든 질문 글을 조회합니다.")
+    @Parameter(name = "userId", description = "유저 Id")
+    @GetMapping("/userId/{userId}")
+    public List<QuestionPostResponse> getPostsByUserId(@PathVariable("userId") Long userId) {
+        return questionPostService.findPostsByUserId(userId);
     }
 
     /* 수업명을 통한 글 조회 */
     @Operation(summary = "과목 글 조회", description = "특정 과목에 해당하는 모든 글을 확인합니다.")
     @Parameter(name = "subject", description = "과목명")
-    @GetMapping("subject/{subject}")
+    @GetMapping("/subject/{subject}")
     public List<QuestionPostResponse> getPostsBySubject(@PathVariable("subject") String subject) {
         return questionPostService.findPostsBySubject(subject);
     }

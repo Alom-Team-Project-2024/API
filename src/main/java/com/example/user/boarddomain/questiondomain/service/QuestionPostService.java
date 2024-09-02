@@ -73,6 +73,16 @@ public class QuestionPostService {
                 .collect(Collectors.toList());
     }
 
+    /* 특정 유저가 작성한 질문 글 조회 로직 (유저 ID 사용) */
+    @Transactional
+    public List<QuestionPostResponse> findPostsByUserId(Long id) {
+        List<QuestionPost> questionPostList = questionPostRepository.findAllByUserId(id);
+
+        return questionPostList.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
     /* 특정 수업명을 통한 모든 질문 글 조회 로직 */
     @Transactional
     public List<QuestionPostResponse> findPostsBySubject(String subject) {
@@ -113,6 +123,7 @@ public class QuestionPostService {
                 .id(questionPost.getId())
                 .subject(questionPost.getSubject())
                 .text(questionPost.getText())
+                .username(questionPost.getUser().getUsername())
                 .writer(questionPost.getWriter())
                 .likes(questionPost.getLikes())
                 .scrapCount(questionPost.getScrapCount())

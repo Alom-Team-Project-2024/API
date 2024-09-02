@@ -13,4 +13,6 @@ public interface MentorPostRepository extends JpaRepository<MentorPost, Long> {
     List<MentorPost> findMentorPostsByTitle(String title);
 
     List<MentorPost> findMentorPostsByCategory(Category category);
+
+    List<MentorPost> findMentorPostsByUserId(Long userId);
 }

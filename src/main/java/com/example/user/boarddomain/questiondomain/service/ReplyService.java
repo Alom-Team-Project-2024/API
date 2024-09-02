@@ -84,6 +84,7 @@ public class ReplyService {
         return ReplyResponse.builder()
                 .id(reply.getId())
                 .text(reply.getText())
+                .username(reply.getQuestionPost().getUser().getUsername())
                 .writer(reply.getWriter())
                 .likes(reply.getLikes())
                 .images(imageDTOS)

@@ -55,7 +55,7 @@ public class QuestionPostImageService {
 
             QuestionPostImage questionPostImage = QuestionPostImage.builder()
                     .questionPost(questionPost)
-                    .imageUrl(file.getOriginalFilename())
+                    .imageUrl(uuidFilename)
                     .build();
             questionPostImageRepository.save(questionPostImage);
             imageDTOS.add(new QuestionPostImageDTO(questionPostImage.getImageUrl()));

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface QuestionPostRepository extends JpaRepository<QuestionPost, Long> {
     List<QuestionPost> findAllByWriter(String username);
+
+    List<QuestionPost> findAllByUserId(Long id);
 }

@@ -31,7 +31,6 @@ public class User extends UserBaseTimeEntity {
     private String name;
 
     /* 닉네임 */
-    @Column(nullable = false)
     private String nickname;
 
     /* 프로필 사진 */

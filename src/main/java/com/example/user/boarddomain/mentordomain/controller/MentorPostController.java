@@ -35,11 +35,19 @@ public class MentorPostController {
     }
 
     /* 특정 사용자가 구인 게시판에 작성한 모든 글 조회 */
-    @Operation(summary = "작성자를 통한 구인 게시판 글 조회", description = "특정 유저가 작성한 글을 조회합니다.(카테고리 상관 없이 조회)")
+    @Operation(summary = "작성자를 통한 구인 게시판 글 조회", description = "유저 닉네임을 파라미터로 받아 해당 유저가 작성한 모든 구인 글을 조회합니다.(카테고리 상관 없이 조회)")
     @Parameter(name = "username", description = "작성자 검색을 위해 String 형식의 username 입력")
     @GetMapping("/writer/{nickname}")
     public List<MentorPostResponse> getPostsByWriter(@PathVariable("nickname") String nickname) {
         return mentorPostService.findPostsByWriter(nickname);
+    }
+
+    /* 유저 Id를 통해 해당 사용자가 구인 게시판에 작성한 모든 글 조회 */
+    @Operation(summary = "유저 Id를 통한 구인 게시판 글 조회", description = "유저 Id를 파라미터로 받아 해당 유저가 작성한 모든 구인 글을 조회합니다. (카테고리 상관 없이 조회")
+    @Parameter(name = "userId", description = "작성자 검색을 위해 Long 형식의 userId 입력")
+    @GetMapping("/userId/{userId}")
+    public List<MentorPostResponse> getPostsByUserId(@PathVariable("userId") Long userId) {
+        return mentorPostService.findPostsByUserId(userId);
     }
 
     /* 특정 글 조회(글 고유 id 조회) */

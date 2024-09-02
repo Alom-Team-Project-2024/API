@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class MentorPost extends MentorBaseTimeEntity {
+public class MentorPost extends MentorPostBaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -64,6 +64,16 @@ public class MentorPostService {
                 .collect(Collectors.toList());
     }
 
+    /* 구인 게시판 유저Id를 통한 작성 글 조회 로직 */
+    @Transactional
+    public List<MentorPostResponse> findPostsByUserId(Long userId) {
+        List<MentorPost> mentorPostList = mentorPostRepository.findMentorPostsByUserId(userId);
+
+        return mentorPostList.stream()
+                .map(this::convertToMentorPostResponse)
+                .collect(Collectors.toList());
+    }
+
     /* 게시글 고유 id를 통한 특정 글 조회 로직 */
     @Transactional
     public MentorPostResponse findPostById(Long id) {
@@ -99,9 +109,11 @@ public class MentorPostService {
                 .category(mentorPost.getCategory())
                 .title(mentorPost.getTitle())
                 .text(mentorPost.getText())
+                .username(mentorPost.getUser().getUsername())
                 .writer(mentorPost.getWriter())
                 .major(mentorPost.getMajor())
                 .likes(mentorPost.getLikes())
+                .scrapCount(mentorPost.getScrapCount())
                 .createdAt(mentorPost.getCreatedAt())
                 .modifiedAt(mentorPost.getModifiedAt())
                 .build();

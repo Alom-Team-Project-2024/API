@@ -33,6 +33,10 @@ public class MentorPostResponse {
     @Schema(description = "본문")
     private String text;
 
+    /* 학번 */
+    @Schema(description = "학번")
+    private String username;
+
     /* 작성자 */
     @Schema(description = "작성자")
     private String writer;
@@ -44,6 +48,10 @@ public class MentorPostResponse {
     /* 좋아요 */
     @Schema(description = "좋아요")
     private int likes;
+
+    /* 스크랩 개수 */
+    @Schema(description = "스크랩 수")
+    private int scrapCount;
 
     /* 글 작성 시간 */
     @Schema(description = "글 작성 시간")
