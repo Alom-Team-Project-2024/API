@@ -57,6 +57,21 @@ public class QuestionPostScrapService {
                 .collect(Collectors.toList());
     }
 
+    /* 내가 스크랩 한 질문 글 최신순 조회 로직 */
+    @Transactional
+    public List<QuestionPostResponse> getMyScrapListOrderByDesc(String username) {
+        User user = userRepository.findByUsername(username);
+        List<QuestionPostScrap> questionPostScrapList = questionPostScrapRepository.findAllByUserOrderByQuestionPostCreatedAtDesc(user);
+
+        List<QuestionPost> questionPostList = questionPostScrapList.stream()
+                .map(QuestionPostScrap::getQuestionPost)
+                .toList();
+
+        return questionPostList.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
     private QuestionPostResponse convertToResponse(QuestionPost questionPost) {
         // QuestionPostImage 리스트를 QuestionPostImageDTO 리스트로 변환
         List<QuestionPostImageDTO> imageDTOS = getQuestionPostImageDTOS(questionPost);

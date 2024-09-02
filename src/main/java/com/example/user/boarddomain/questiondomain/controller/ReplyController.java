@@ -2,22 +2,15 @@ package com.example.user.boarddomain.questiondomain.controller;
 
 import com.example.user.boarddomain.questiondomain.dto.ReplyDTO;
 import com.example.user.boarddomain.questiondomain.dto.ReplyResponse;
-import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
 import com.example.user.boarddomain.questiondomain.entity.Reply;
-import com.example.user.boarddomain.questiondomain.repository.QuestionPostRepository;
-import com.example.user.boarddomain.questiondomain.repository.ReplyRepository;
 import com.example.user.boarddomain.questiondomain.service.ReplyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -42,10 +35,18 @@ public class ReplyController {
 
     /* 특정 글 모든 답변 조회 */
     @Operation(summary = "답변 조회", description = "특정 질문글에 작성된 모든 답변을 조회합니다.")
-    @Parameter(name = "post_id", description = "질문 게시글 Id")
-    @GetMapping("/{post_id}/reply")
-    public List<ReplyResponse> getReplies(@PathVariable Long post_id) {
-        return replyService.getAllReplies(post_id);
+    @Parameter(name = "postId", description = "질문 게시글 Id")
+    @GetMapping("/{postId}/reply")
+    public List<ReplyResponse> getReplies(@PathVariable Long postId) {
+        return replyService.getAllReplies(postId);
+    }
+
+    /* 특정 질문글에 달린 모든 답변 최신순 조회 */
+    @Operation(summary = "답변 최신 순 조회", description = "특정 질문글에 작성된 모든 답변을 최순순으로 정렬 후 조회합니다.")
+    @Parameter(name = "postId", description = "질문 게시글 Id")
+    @GetMapping("/{postId}/reply/desc")
+    public List<ReplyResponse> getRepliesOrderByCreatedAtDesc(@PathVariable Long postId) {
+        return replyService.getAllRepliesOrderByCreatedAtDesc(postId);
     }
 
     /* 답변 좋아요 증가 */

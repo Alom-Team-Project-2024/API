@@ -9,4 +9,8 @@ public interface QuestionPostRepository extends JpaRepository<QuestionPost, Long
     List<QuestionPost> findAllByWriter(String username);
 
     List<QuestionPost> findAllByUserId(Long id);
+
+    List<QuestionPost> findAllByOrderByCreatedAtDesc();
+
+    List<QuestionPost> findAllByUserIdOrderByCreatedAtDesc(Long userId);
 }

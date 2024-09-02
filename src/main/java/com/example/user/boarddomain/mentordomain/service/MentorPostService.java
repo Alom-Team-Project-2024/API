@@ -54,6 +54,16 @@ public class MentorPostService {
                 .collect(Collectors.toList());
     }
 
+    /* 구인 게시판 전체 글 최신 순 정렬 조회 로직 */
+    @Transactional
+    public List<MentorPostResponse> findAllPostsOrderByCreatedAtDesc() {
+        List<MentorPost> mentorPostList = mentorPostRepository.findAllByOrderByCreatedAtDesc();
+
+        return mentorPostList.stream()
+                .map(this::convertToMentorPostResponse)
+                .collect(Collectors.toList());
+    }
+
     /* 구인 게시판 작성자를 통한 글 조회 로직 */
     @Transactional
     public List<MentorPostResponse> findPostsByWriter(String username) {
@@ -68,6 +78,16 @@ public class MentorPostService {
     @Transactional
     public List<MentorPostResponse> findPostsByUserId(Long userId) {
         List<MentorPost> mentorPostList = mentorPostRepository.findMentorPostsByUserId(userId);
+
+        return mentorPostList.stream()
+                .map(this::convertToMentorPostResponse)
+                .collect(Collectors.toList());
+    }
+
+    /* 구인 게시판 유저 Id를 통한 작성 글 최신 조회 로직 */
+    @Transactional
+    public List<MentorPostResponse> findPostsByUserIdOrderByCreatedAtDesc(Long userId) {
+        List<MentorPost> mentorPostList = mentorPostRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
 
         return mentorPostList.stream()
                 .map(this::convertToMentorPostResponse)
@@ -93,6 +113,14 @@ public class MentorPostService {
     @Transactional
     public List<MentorPostResponse> findPostsByCategory(Category category) {
         return mentorPostRepository.findMentorPostsByCategory(category).stream()
+                .map(this::convertToMentorPostResponse)
+                .collect(Collectors.toList());
+    }
+
+    /* 카테고리를 통한 글 최신 순 조회 로직 */
+    @Transactional
+    public List<MentorPostResponse> findPostsByCategoryOrderByDesc(Category category) {
+        return mentorPostRepository.findAllByCategoryOrderByCreatedAtDesc(category).stream()
                 .map(this::convertToMentorPostResponse)
                 .collect(Collectors.toList());
     }

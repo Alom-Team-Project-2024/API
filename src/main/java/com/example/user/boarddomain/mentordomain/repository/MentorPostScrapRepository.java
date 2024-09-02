@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface MentorPostScrapRepository extends JpaRepository<MentorPostScrap, Long> {
     List<MentorPostScrap> findAllByUser(User user);
+
+    List<MentorPostScrap> findAllByUserOrderByMentorPostCreatedAtDesc(User user);
 }

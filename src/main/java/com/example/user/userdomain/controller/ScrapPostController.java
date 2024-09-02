@@ -28,10 +28,24 @@ public class ScrapPostController {
         return questionPostScrapService.getMyScrapList(username);
     }
 
+    /* 내가 스크랩 한 질문 게시판 글 최신순 조회 */
+    @Operation(summary = "내가 스크랩 한 질문 게시판 글 최신순 조회", description = "내가 스크랩 한 질문 게시판 글을 최신순으로 정렬하여 모두 조회합니다.")
+    @GetMapping("/users/question_post/scrap/{username}/desc")
+    public List<QuestionPostResponse> getMyQuestionPostListOrderByDesc(@PathVariable("username") String username) {
+        return questionPostScrapService.getMyScrapListOrderByDesc(username);
+    }
+
     /* 내가 스크랩 한 구인 글 조회 */
     @Operation(summary = "내가 스크랩 한 구인 게시판 글", description = "내가 스크랩 한 구인 게시판 글을 모두 조회합니다.")
     @GetMapping("/users/mentor_post/scrap/{username}")
     public List<MentorPostResponse> getMyMentorPostList(@PathVariable("username") String username) {
         return mentorPostScrapService.getMyScrapList(username);
+    }
+
+    /* 내가 스크랩 한 구인 글 최신순 조회 */
+    @Operation(summary = "내가 스크랩 한 구인 게시판 글 최신순 조회", description = "내가 스크랩 한 구인 게시판 글을 최신순으로 정렬하여 모두 조회합니다.")
+    @GetMapping("/users/mentor_post/scrap/{username}/desc")
+    public List<MentorPostResponse> getMyMentorPostListOrderByDesc(@PathVariable("username") String username) {
+        return mentorPostScrapService.getMyScrapListOrderByDesc(username);
     }
 }

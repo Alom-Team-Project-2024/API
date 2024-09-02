@@ -9,4 +9,6 @@ import java.util.List;
 public interface QuestionPostScrapRepository extends JpaRepository<QuestionPostScrap, Long> {
 
     List<QuestionPostScrap> findAllByUser(User user);
+
+    List<QuestionPostScrap> findAllByUserOrderByQuestionPostCreatedAtDesc(User user);
 }

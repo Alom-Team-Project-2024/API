@@ -50,12 +50,22 @@ public class ReplyService {
         return savedReply;
     }
 
-    /* 특정 글 모든 답변 return */
+    /* 특정 글 모든 답변 조회 로직 */
     @Transactional
-    public List<ReplyResponse> getAllReplies(Long post_id) {
-        List<Reply> replies = questionPostRepository.findById(post_id).orElseThrow(NullPointerException::new).getReplies();
+    public List<ReplyResponse> getAllReplies(Long postId) {
+        List<Reply> replies = questionPostRepository.findById(postId).orElseThrow(NullPointerException::new).getReplies();
 
         return replies.stream().map(this::convertToReplyResponse).collect(Collectors.toList());
+    }
+
+    /* 특정 질문 게시글에 등록된 모든 답변 최신순 조회 로직 */
+    @Transactional
+    public List<ReplyResponse> getAllRepliesOrderByCreatedAtDesc(Long postId) {
+        List<Reply> replyList = replyRepository.findAllByQuestionPostIdOrderByCreatedAtDesc(postId);
+
+        return replyList.stream()
+                .map(this::convertToReplyResponse)
+                .collect(Collectors.toList());
     }
 
     /* 답변 좋아요 증가 로직 */

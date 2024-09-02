@@ -62,6 +62,16 @@ public class QuestionPostService {
                 .collect(Collectors.toList());
     }
 
+    /* 질문게시판에 등록된 모든 글 최신순으로 정렬 조회 로직 */
+    @Transactional
+    public List<QuestionPostResponse> findAllPostsOrderByCreatedAtDesc() {
+        List<QuestionPost> questionPostList = questionPostRepository.findAllByOrderByCreatedAtDesc();
+
+        return questionPostList.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
     /* 특정 작성자가 작성한 질문 글 조회 로직 */
     @Transactional
     public List<QuestionPostResponse> findPostsByUsername(String username) {
@@ -73,10 +83,20 @@ public class QuestionPostService {
                 .collect(Collectors.toList());
     }
 
-    /* 특정 유저가 작성한 질문 글 조회 로직 (유저 ID 사용) */
+    /* 특정 유저가 작성한 질문 글 조회 로직 (유저 Id 사용) */
     @Transactional
     public List<QuestionPostResponse> findPostsByUserId(Long id) {
         List<QuestionPost> questionPostList = questionPostRepository.findAllByUserId(id);
+
+        return questionPostList.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+    /* 특정 유저가 작성한 질문 글 최신순 조회 로직 (유저 Id 사용) */
+    @Transactional
+    public List<QuestionPostResponse> findPostsByUserIdOrderByCreatedAtDesc(Long userId) {
+        List<QuestionPost> questionPostList = questionPostRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
 
         return questionPostList.stream()
                 .map(this::convertToResponse)

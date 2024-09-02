@@ -55,6 +55,21 @@ public class MentorPostScrapService {
                 .collect(Collectors.toList());
     }
 
+    /* 내가 스크랩 한 구인 글 최신순 조회 로직 */
+    @Transactional
+    public List<MentorPostResponse> getMyScrapListOrderByDesc(String username) {
+        User user = userRepository.findByUsername(username);
+        List<MentorPostScrap> mentorPostScrapList = mentorPostScrapRepository.findAllByUserOrderByMentorPostCreatedAtDesc(user);
+
+        List<MentorPost> mentorPostList = mentorPostScrapList.stream()
+                .map(MentorPostScrap::getMentorPost)
+                .toList();
+
+        return mentorPostList.stream()
+                .map(this::convertToMentorPostResponse)
+                .collect(Collectors.toList());
+    }
+
     private MentorPostResponse convertToMentorPostResponse(MentorPost mentorPost) {
         return MentorPostResponse.builder()
                 .id(mentorPost.getId())

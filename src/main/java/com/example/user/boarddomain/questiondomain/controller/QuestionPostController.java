@@ -47,12 +47,19 @@ public class QuestionPostController {
         return questionPostService.findAllPosts();
     }
 
+    /* 전체 글 목록 최신순으로 정렬 후 조회 */
+    @Operation(summary = "전체 글 최신 순 조회", description = "질문게시판에 작성된 모든 글을 최신순으로 정렬하여 조회합니다.")
+    @GetMapping("/desc")
+    public List<QuestionPostResponse> getAllPostsOrderByCreatedAtDesc() {
+        return questionPostService.findAllPostsOrderByCreatedAtDesc();
+    }
+
     /* 작성자를 통한 글 조회 */
-    @Operation(summary = "작성자 글 조회", description = "유저 닉네임을 파라미터로 받아 해당 유저가 작성한 모든 질문 글을 조회합니다.")
-    @Parameter(name = "nickname", description = "닉네임")
-    @GetMapping("/writer/{nickname}")
-    public List<QuestionPostResponse> getPostsByUsername(@PathVariable("nickname") String nickname) {
-        return questionPostService.findPostsByUsername(nickname);
+    @Operation(summary = "작성자 글 조회", description = "유저 학번 파라미터로 받아 해당 유저가 작성한 모든 질문 글을 조회합니다.")
+    @Parameter(name = "username", description = "학번")
+    @GetMapping("/username/{username}")
+    public List<QuestionPostResponse> getPostsByUsername(@PathVariable("username") String username) {
+        return questionPostService.findPostsByUsername(username);
     }
 
     /* 유저 id를 통한 작성 글 조회 */
@@ -61,6 +68,14 @@ public class QuestionPostController {
     @GetMapping("/userId/{userId}")
     public List<QuestionPostResponse> getPostsByUserId(@PathVariable("userId") Long userId) {
         return questionPostService.findPostsByUserId(userId);
+    }
+
+    /* 특정 유저가 작성한 글 최신순 정렬 조회 */
+    @Operation(summary = "유저 Id를 통해 특정 유저가 작성한 글 최신순 정렬", description = "유저 Id를 파라미터로 받아 해당 유저가 작성한 모든 질문 글을 최신순으로 정렬 후 조회합니다.")
+    @Parameter(name = "userId", description = "유저 Id")
+    @GetMapping("/userId/{userId}/desc")
+    public List<QuestionPostResponse> getPostsByUserIdOrderByCreatedAtDesc(@PathVariable("userId") Long userId) {
+        return questionPostService.findPostsByUserIdOrderByCreatedAtDesc(userId);
     }
 
     /* 수업명을 통한 글 조회 */
