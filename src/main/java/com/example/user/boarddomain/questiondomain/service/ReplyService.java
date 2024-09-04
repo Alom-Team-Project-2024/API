@@ -37,6 +37,7 @@ public class ReplyService {
 
         Reply reply = Reply.builder()
                 .questionPost(questionPost)
+                .username(user.getUsername())
                 .text(replyDTO.getText())
                 .writer(user.getNickname())
                 .build();
@@ -94,7 +95,7 @@ public class ReplyService {
         return ReplyResponse.builder()
                 .id(reply.getId())
                 .text(reply.getText())
-                .username(reply.getQuestionPost().getUser().getUsername())
+                .username(reply.getUsername())
                 .writer(reply.getWriter())
                 .likes(reply.getLikes())
                 .images(imageDTOS)

@@ -30,6 +30,9 @@ public class Reply extends ReplyBaseTimeEntity {
     @Column(nullable = false)
     private String text;
 
+    /* 답변 작성자 학번 */
+    private String username;
+
     /* 답변 작성자 */
     private String writer;
 

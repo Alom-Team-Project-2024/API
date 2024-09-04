@@ -1,10 +1,8 @@
 package com.example.user.boarddomain.questiondomain.service;
 
-import com.example.user.boarddomain.questiondomain.dto.QuestionPostDTO;
-import com.example.user.boarddomain.questiondomain.dto.QuestionPostImageDTO;
-import com.example.user.boarddomain.questiondomain.dto.QuestionPostResponse;
-import com.example.user.boarddomain.questiondomain.dto.ReplyDTO;
+import com.example.user.boarddomain.questiondomain.dto.*;
 import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
+import com.example.user.boarddomain.questiondomain.entity.Reply;
 import com.example.user.boarddomain.questiondomain.repository.QuestionPostRepository;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.repository.UserRepository;
@@ -135,8 +133,8 @@ public class QuestionPostService {
         // QuestionPostImage 리스트를 QuestionPostImageDTO 리스트로 변환
         List<QuestionPostImageDTO> imageDTOS = getQuestionPostImageDTOS(questionPost);
 
-        // Reply 리스트를 ReplyDTO 리스트로 변환
-        List<ReplyDTO> replyDTOS = getReplyDTOS(questionPost);
+        // Reply 리스트를 ReplyResponse 리스트로 변환
+        List<ReplyResponse> replyResponseList = getReplyResponseList(questionPost);
 
         // QuestionPost를 QuestionPostResponse로 변환하여 반환
         return QuestionPostResponse.builder()
@@ -148,16 +146,16 @@ public class QuestionPostService {
                 .likes(questionPost.getLikes())
                 .scrapCount(questionPost.getScrapCount())
                 .replyCount(questionPost.getReplyCount())
-                .replies(replyDTOS)
+                .replies(replyResponseList)
                 .images(imageDTOS)
                 .createdAt(questionPost.getCreatedAt())
                 .modifiedAt(questionPost.getModifiedAt())
                 .build();
     }
 
-    private static List<ReplyDTO> getReplyDTOS(QuestionPost questionPost) {
+    private static List<ReplyResponse> getReplyResponseList(QuestionPost questionPost) {
         return questionPost.getReplies().stream()
-                .map(reply -> new ReplyDTO(reply.getText()))
+                .map(reply -> new ReplyResponse(reply.getId(), reply.getText(), reply.getUsername(), reply.getWriter(), reply.getLikes(), getReplyImageDTOS(reply), reply.getCreatedAt(), reply.getModifiedAt()))
                 .collect(Collectors.toList());
     }
 
@@ -167,4 +165,9 @@ public class QuestionPostService {
                 .collect(Collectors.toList());
     }
 
+    private static List<ReplyImageDTO> getReplyImageDTOS(Reply reply) {
+        return reply.getImages().stream()
+                .map(replyImage -> new ReplyImageDTO(replyImage.getImageUrl()))
+                .collect(Collectors.toList());
+    }
 }

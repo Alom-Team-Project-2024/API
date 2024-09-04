@@ -51,7 +51,7 @@ public class QuestionPostResponse {
 
     /* 글 답변 */
     @Schema(description = "등록된 답변")
-    private List<ReplyDTO> replies;
+    private List<ReplyResponse> replies;
 
     /* 첨부된 이미지 */
     @Schema(description = "첨부된 이미지")
