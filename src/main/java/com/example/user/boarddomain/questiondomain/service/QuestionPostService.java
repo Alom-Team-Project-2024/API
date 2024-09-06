@@ -73,7 +73,7 @@ public class QuestionPostService {
     /* 특정 작성자가 작성한 질문 글 조회 로직 */
     @Transactional
     public List<QuestionPostResponse> findPostsByUsername(String username) {
-        List<QuestionPost> questionPosts = questionPostRepository.findAllByWriter(username);
+        List<QuestionPost> questionPosts = questionPostRepository.findAllByUserUsername(username);
 
         // 조회한 QuestionPost 엔티티 리스트를 QuestionPostResponse DTO 리스트로 변환
         return questionPosts.stream()
@@ -104,7 +104,7 @@ public class QuestionPostService {
     /* 특정 수업명을 통한 모든 질문 글 조회 로직 */
     @Transactional
     public List<QuestionPostResponse> findPostsBySubject(String subject) {
-        List<QuestionPost> questionPosts = questionPostRepository.findAllByWriter(subject);
+        List<QuestionPost> questionPosts = questionPostRepository.findAllBySubject(subject);
 
         // 조회한 QuestionPost 엔티티 리스트를 QuestionPostResponse DTO 리스트로 변환
         return questionPosts.stream()
