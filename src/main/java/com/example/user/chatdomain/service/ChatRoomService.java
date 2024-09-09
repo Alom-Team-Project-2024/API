@@ -1,6 +1,5 @@
 package com.example.user.chatdomain.service;
 
-import com.example.user.chatdomain.dto.ChatRoomDTO;
 import com.example.user.chatdomain.dto.ChatRoomResponse;
 import com.example.user.chatdomain.entity.ChatRoom;
 import com.example.user.chatdomain.entity.UserChatRoom;
@@ -14,9 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,12 +49,16 @@ public class ChatRoomService {
         return this.convertToChatRoomResponse(chatRoom);
     }
 
-    /* 특정 유저가 참여중인 모든 채팅방 조회 로직 */
+    /* 유저 학번을 통해 특정 유저가 참여중인 모든 채팅방 조회 로직 */
     @Transactional
-    public List<ChatRoomResponse> findRoomsByChatRoomName(String nickname) {
+    public List<ChatRoomResponse> findRoomsByChatRoomName(String username) {
 
-        return chatRoomRepository.findAllByChatRoomName(nickname).stream()
-                .map(this::convertToChatRoomResponse)
+        User user = userRepository.findByUsername(username);
+
+        List<UserChatRoom> userChatRoomList = userChatRoomRepository.findAllByUser(user);
+
+        return userChatRoomList.stream()
+                .map(userChatRoom -> convertToChatRoomResponse(userChatRoom.getChatRoom()))
                 .collect(Collectors.toList());
     }
 

@@ -23,7 +23,7 @@ public class ChatMessage extends ChatMessageBaseTimeEntity{
     @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
 
-    /* 보내는 사람 */
+    /* 보내는 사람 학번 */
     private String sender;
 
     /* 메시지 내용 */
