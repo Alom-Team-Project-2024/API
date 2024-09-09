@@ -13,8 +13,8 @@ public class ChatMessageResponse {
         /* 채팅방 Id */
         private Long chatRoomId;
 
-        /* 보내는 사람(유저 닉네임) */
-        @Parameter(description = "보내는 유저 닉네임")
+        /* 보내는 사람(유저 학번) */
+        @Parameter(description = "보내는 유저 학번")
         private String sender;
 
         /* 메시지 내용 */

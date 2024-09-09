@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,19 +40,22 @@ public class QuestionPostImageService {
 
         List<QuestionPostImageDTO> imageDTOS = new ArrayList<>();
 
-        // 업로드 디렉토리 확인 및 생성
-        Path uploadPath = Paths.get(uploadDir);
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-
         for (MultipartFile file : files) {
-            Path copyLocation = Paths.get(uploadDir + "/" + file.getOriginalFilename());
-            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+            // 파일 이름을 UUID로 대체
+            String originalFilename = file.getOriginalFilename();
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf('.'));
+            String uuidFilename = UUID.randomUUID() + fileExtension;
+
+            Path filePath = Paths.get(uploadDir, uuidFilename);
+
+            // try-with-resources를 사용하여 파일 스트림을 자동으로 닫음
+            try (var inputStream = file.getInputStream()) {
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            }
 
             QuestionPostImage questionPostImage = QuestionPostImage.builder()
                     .questionPost(questionPost)
-                    .imageUrl(file.getOriginalFilename())
+                    .imageUrl(uuidFilename)
                     .build();
             questionPostImageRepository.save(questionPostImage);
             imageDTOS.add(new QuestionPostImageDTO(questionPostImage.getImageUrl()));

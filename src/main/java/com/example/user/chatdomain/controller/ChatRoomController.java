@@ -1,8 +1,6 @@
 package com.example.user.chatdomain.controller;
 
-import com.example.user.chatdomain.dto.ChatRoomDTO;
 import com.example.user.chatdomain.dto.ChatRoomResponse;
-import com.example.user.chatdomain.entity.ChatRoom;
 import com.example.user.chatdomain.service.ChatRoomService;
 import com.example.user.chatdomain.service.OneToOneChatService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,17 +42,17 @@ public class ChatRoomController {
     }
 
     /* 새로운 채팅방 생성 */
-    @Operation(summary = "새로운 채팅방 생성", description = "학번 2개를 받아 새로운 채팅방을 생성합니다.")
+    @Operation(summary = "새로운 채팅방 생성", description = "닉네임 2개를 받아 새로운 채팅방을 생성합니다.")
     @PostMapping("")
-    public ResponseEntity<ChatRoomResponse> createChat(String username1, String username2) {
-        ChatRoomResponse chatRoomResponse = oneToOneChatService.createChatRoomForUsers(username1, username2);
+    public ResponseEntity<ChatRoomResponse> createChat(String nickname1, String nickname2) {
+        ChatRoomResponse chatRoomResponse = oneToOneChatService.createChatRoomForUsers(nickname1, nickname2);
         return ResponseEntity.ok(chatRoomResponse);
     }
 
     /* 특정 유저가 참가중인 채팅방 목록 조회 */
-    @Operation(summary = "특정 유저가 참가중인 채팅방 목록", description = "특정 유저가 참여중인 채팅방 목록을 조회합니다. 채팅방 이름이 유저 닉네임의 나열이므로 조회하고 싶은 유저 닉네임을 입력하면 해당 유저의 닉네임이 포함된 채팅방이 모두 조회됩니다.")
-    @GetMapping("/rooms/{nickname}")
-    public List<ChatRoomResponse> findRoomsByUsername(@PathVariable("nickname") String nickname) {
-        return chatRoomService.findRoomsByChatRoomName(nickname);
+    @Operation(summary = "특정 유저가 참가중인 채팅방 목록", description = "유저 학번을 파라미터로 받아 해당 유저가 참여중인 모든 채팅방의 목록을 조회합니다.")
+    @GetMapping("/rooms/{username}")
+    public List<ChatRoomResponse> findRoomsByUsername(@PathVariable("username") String username) {
+        return chatRoomService.findRoomsByChatRoomName(username);
     }
 }

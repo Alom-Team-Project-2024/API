@@ -22,5 +22,4 @@ public class MentorPostDTO {
     /* 카테고리 */
     @Schema(description = "멘토 구해요 / 멘티 구해요", defaultValue = "FIND_MENTOR")
     private Category category;
-
 }

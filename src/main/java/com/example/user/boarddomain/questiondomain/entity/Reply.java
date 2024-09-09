@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Entity
@@ -27,13 +25,13 @@ public class Reply extends ReplyBaseTimeEntity {
     @JoinColumn(name = "post_id")
     private QuestionPost questionPost;
 
-    /* 답변 제목 */
-    private String title;
-
     /* 답변 본문 */
     @Lob
     @Column(nullable = false)
     private String text;
+
+    /* 답변 작성자 학번 */
+    private String username;
 
     /* 답변 작성자 */
     private String writer;

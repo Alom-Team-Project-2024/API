@@ -1,21 +1,14 @@
 package com.example.user.userdomain.controller;
 
 import com.example.user.userdomain.dto.AuthUserDTO;
-import com.example.user.userdomain.dto.UserInfoUpdateRequest;
 import com.example.user.userdomain.dto.UserResponse;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.jwt.JWTUtil;
 import com.example.user.userdomain.service.SejongAuthService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,14 +29,14 @@ public class AuthController {
     /* 로그인 */
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "세종대 인증을 받은 사용자 로그인")
-    public AuthUserDTO login(@RequestBody AuthUserDTO authUserDTO, HttpServletResponse response) {
+    public UserResponse login(@RequestBody AuthUserDTO authUserDTO, HttpServletResponse response) {
         User findUser = sejongAuthService.saveUser(authUserDTO);
 
         String token = jwtUtil.createAccessToken(findUser.getUsername(), findUser.getNickname(), findUser.getRole());
 
         response.addHeader("Authorization", "Bearer " + token);
 
-        return authUserDTO;
+        return new UserResponse(findUser.getId(), findUser.getUsername(), findUser.getName(), findUser.getNickname(), findUser.getProfileImage(), findUser.getMajor(), findUser.getStudentCode(), findUser.getStudentGrade(), findUser.getRegistrationStatus(), findUser.getRole(), findUser.getPoint(), findUser.getCreatedAt(), findUser.getModifiedAt());
     }
 
     /* Id 값으로 유저 정보 조회 */

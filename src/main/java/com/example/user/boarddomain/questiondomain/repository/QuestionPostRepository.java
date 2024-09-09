@@ -6,5 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface QuestionPostRepository extends JpaRepository<QuestionPost, Long> {
-    List<QuestionPost> findAllByWriter(String username);
+    List<QuestionPost> findAllByUserUsername(String username);
+
+    List<QuestionPost> findAllBySubject(String subject);
+
+    List<QuestionPost> findAllByUserId(Long id);
+
+    List<QuestionPost> findAllByOrderByCreatedAtDesc();
+
+    List<QuestionPost> findAllByUserIdOrderByCreatedAtDesc(Long userId);
 }

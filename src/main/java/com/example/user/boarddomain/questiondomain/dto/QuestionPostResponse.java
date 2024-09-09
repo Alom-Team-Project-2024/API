@@ -29,6 +29,10 @@ public class QuestionPostResponse {
     @Schema(description = "본문 내용")
     private String text;
 
+    /* 학번 */
+    @Schema(description = "학번")
+    private String username;
+
     /* 작성자 */
     @Schema(description = "작성자")
     private String writer;
@@ -47,7 +51,7 @@ public class QuestionPostResponse {
 
     /* 글 답변 */
     @Schema(description = "등록된 답변")
-    private List<ReplyDTO> replies;
+    private List<ReplyResponse> replies;
 
     /* 첨부된 이미지 */
     @Schema(description = "첨부된 이미지")

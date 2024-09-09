@@ -35,7 +35,7 @@ public class MentorPostService {
                 .category(mentorPostDTO.getCategory())
                 .title(mentorPostDTO.getTitle())
                 .text(mentorPostDTO.getText())
-                .writer(username)
+                .writer(user.getNickname())
                 .major(user.getMajor())
                 .build();
 
@@ -54,12 +54,42 @@ public class MentorPostService {
                 .collect(Collectors.toList());
     }
 
+    /* 구인 게시판 전체 글 최신 순 정렬 조회 로직 */
+    @Transactional
+    public List<MentorPostResponse> findAllPostsOrderByCreatedAtDesc() {
+        List<MentorPost> mentorPostList = mentorPostRepository.findAllByOrderByCreatedAtDesc();
+
+        return mentorPostList.stream()
+                .map(this::convertToMentorPostResponse)
+                .collect(Collectors.toList());
+    }
+
     /* 구인 게시판 작성자를 통한 글 조회 로직 */
     @Transactional
     public List<MentorPostResponse> findPostsByWriter(String username) {
-        List<MentorPost> mentorPosts = mentorPostRepository.findMentorPostsByWriter(username);
+        List<MentorPost> mentorPosts = mentorPostRepository.findAllByUserUsername(username);
 
         return mentorPosts.stream()
+                .map(this::convertToMentorPostResponse)
+                .collect(Collectors.toList());
+    }
+
+    /* 구인 게시판 유저Id를 통한 작성 글 조회 로직 */
+    @Transactional
+    public List<MentorPostResponse> findPostsByUserId(Long userId) {
+        List<MentorPost> mentorPostList = mentorPostRepository.findMentorPostsByUserId(userId);
+
+        return mentorPostList.stream()
+                .map(this::convertToMentorPostResponse)
+                .collect(Collectors.toList());
+    }
+
+    /* 구인 게시판 유저 Id를 통한 작성 글 최신 조회 로직 */
+    @Transactional
+    public List<MentorPostResponse> findPostsByUserIdOrderByCreatedAtDesc(Long userId) {
+        List<MentorPost> mentorPostList = mentorPostRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
+
+        return mentorPostList.stream()
                 .map(this::convertToMentorPostResponse)
                 .collect(Collectors.toList());
     }
@@ -87,6 +117,14 @@ public class MentorPostService {
                 .collect(Collectors.toList());
     }
 
+    /* 카테고리를 통한 글 최신 순 조회 로직 */
+    @Transactional
+    public List<MentorPostResponse> findPostsByCategoryOrderByDesc(Category category) {
+        return mentorPostRepository.findAllByCategoryOrderByCreatedAtDesc(category).stream()
+                .map(this::convertToMentorPostResponse)
+                .collect(Collectors.toList());
+    }
+
     /* 글 삭제 */
     @Transactional
     public void deletePost(Long id) {
@@ -99,9 +137,11 @@ public class MentorPostService {
                 .category(mentorPost.getCategory())
                 .title(mentorPost.getTitle())
                 .text(mentorPost.getText())
+                .username(mentorPost.getUser().getUsername())
                 .writer(mentorPost.getWriter())
                 .major(mentorPost.getMajor())
                 .likes(mentorPost.getLikes())
+                .scrapCount(mentorPost.getScrapCount())
                 .createdAt(mentorPost.getCreatedAt())
                 .modifiedAt(mentorPost.getModifiedAt())
                 .build();

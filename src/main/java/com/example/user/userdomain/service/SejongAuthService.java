@@ -1,24 +1,16 @@
 package com.example.user.userdomain.service;
 
-import com.example.user.chatdomain.dto.UserChatRoomDTO;
-import com.example.user.chatdomain.entity.UserChatRoom;
 import com.example.user.userdomain.dto.AuthUserDTO;
-import com.example.user.userdomain.dto.UserInfoUpdateRequest;
 import com.example.user.userdomain.dto.UserResponse;
 import com.example.user.userdomain.entity.Role;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -42,7 +34,7 @@ public class SejongAuthService {
             User user = User.builder()
                     .username(authUserDTO.getUsername())
                     .name(authUserDTO.getName())
-                    .nickname("user" + (int) (Math.random() * 1000))
+                    .nickname(null)
                     .major(authUserDTO.getMajor())
                     .studentGrade(authUserDTO.getStudentGrade())
                     .studentCode(Integer.parseInt(authUserDTO.getUsername().substring(0, 2)))

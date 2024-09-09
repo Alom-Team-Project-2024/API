@@ -2,8 +2,6 @@ package com.example.user.userdomain.filter;
 
 import com.example.user.userdomain.dto.CustomUserDetails;
 import com.example.user.userdomain.dto.UserDTO;
-import com.example.user.userdomain.entity.Role;
-import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.jwt.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;

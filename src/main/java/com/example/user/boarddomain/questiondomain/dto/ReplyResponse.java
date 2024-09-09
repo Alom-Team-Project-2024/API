@@ -17,13 +17,13 @@ public class ReplyResponse {
     @Schema(description = "답변 Id")
     private Long id;
 
-    /* 제목 */
-    @Schema(description = "답변 제목")
-    private String title;
-
     /* 본문 */
     @Schema(description = "답변 본문")
     private String text;
+
+    /* 학번 */
+    @Schema(description = "학번")
+    private String username;
 
     /* 작성자 */
     @Schema(description = "답변 작성자")

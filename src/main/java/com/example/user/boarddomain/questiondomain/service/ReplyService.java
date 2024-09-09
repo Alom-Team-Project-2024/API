@@ -7,6 +7,8 @@ import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
 import com.example.user.boarddomain.questiondomain.entity.Reply;
 import com.example.user.boarddomain.questiondomain.repository.QuestionPostRepository;
 import com.example.user.boarddomain.questiondomain.repository.ReplyRepository;
+import com.example.user.userdomain.entity.User;
+import com.example.user.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,34 +26,47 @@ public class ReplyService {
 
     private final QuestionPostRepository questionPostRepository;
     private final ReplyRepository replyRepository;
+    private final UserRepository userRepository;
 
     /* 답변 저장 */
     @Transactional
-    public Reply saveReply(@ModelAttribute ReplyDTO replyDTO, Long post_id) {
-        QuestionPost questionPost = questionPostRepository.findById(post_id).orElseThrow(NullPointerException::new);
+    public Reply saveReply(@ModelAttribute ReplyDTO replyDTO, Long postId) {
+        QuestionPost questionPost = questionPostRepository.findById(postId).orElseThrow(NullPointerException::new);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username);
 
         Reply reply = Reply.builder()
                 .questionPost(questionPost)
-                .title(replyDTO.getTitle())
+                .username(user.getUsername())
                 .text(replyDTO.getText())
-                .writer(SecurityContextHolder.getContext().getAuthentication().getName())
+                .writer(user.getNickname())
                 .build();
 
         Reply savedReply = replyRepository.save(reply);
 
         // replyCount 동기화
-        questionPost.synchronizedReplyCount();
+        questionPost.increaseReplyCount();
         questionPostRepository.save(questionPost);
 
         return savedReply;
     }
 
-    /* 특정 글 모든 답변 return */
+    /* 특정 글 모든 답변 조회 로직 */
     @Transactional
-    public List<ReplyResponse> getAllReplies(Long post_id) {
-        List<Reply> replies = questionPostRepository.findById(post_id).orElseThrow(NullPointerException::new).getReplies();
+    public List<ReplyResponse> getAllReplies(Long postId) {
+        List<Reply> replies = questionPostRepository.findById(postId).orElseThrow(NullPointerException::new).getReplies();
 
         return replies.stream().map(this::convertToReplyResponse).collect(Collectors.toList());
+    }
+
+    /* 특정 질문 게시글에 등록된 모든 답변 최신순 조회 로직 */
+    @Transactional
+    public List<ReplyResponse> getAllRepliesOrderByCreatedAtDesc(Long postId) {
+        List<Reply> replyList = replyRepository.findAllByQuestionPostIdOrderByCreatedAtDesc(postId);
+
+        return replyList.stream()
+                .map(this::convertToReplyResponse)
+                .collect(Collectors.toList());
     }
 
     /* 답변 좋아요 증가 로직 */
@@ -79,8 +94,8 @@ public class ReplyService {
 
         return ReplyResponse.builder()
                 .id(reply.getId())
-                .title(reply.getTitle())
                 .text(reply.getText())
+                .username(reply.getUsername())
                 .writer(reply.getWriter())
                 .likes(reply.getLikes())
                 .images(imageDTOS)

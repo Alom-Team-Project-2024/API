@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public abstract class MentorBaseTimeEntity {
+public abstract class MentorPostBaseTimeEntity {
 
     /* 생성 날짜 */
     @CreatedDate

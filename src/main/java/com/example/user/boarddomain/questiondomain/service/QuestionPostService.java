@@ -1,10 +1,8 @@
 package com.example.user.boarddomain.questiondomain.service;
 
-import com.example.user.boarddomain.questiondomain.dto.QuestionPostDTO;
-import com.example.user.boarddomain.questiondomain.dto.QuestionPostImageDTO;
-import com.example.user.boarddomain.questiondomain.dto.QuestionPostResponse;
-import com.example.user.boarddomain.questiondomain.dto.ReplyDTO;
+import com.example.user.boarddomain.questiondomain.dto.*;
 import com.example.user.boarddomain.questiondomain.entity.QuestionPost;
+import com.example.user.boarddomain.questiondomain.entity.Reply;
 import com.example.user.boarddomain.questiondomain.repository.QuestionPostRepository;
 import com.example.user.userdomain.entity.User;
 import com.example.user.userdomain.repository.UserRepository;
@@ -36,7 +34,7 @@ public class QuestionPostService {
                 .user(user)
                 .subject(questionPostDTO.getSubject())
                 .text(questionPostDTO.getText())
-                .writer(username)
+                .writer(user.getNickname())
                 .build();
 
         return questionPostRepository.save(questionPost);
@@ -62,10 +60,20 @@ public class QuestionPostService {
                 .collect(Collectors.toList());
     }
 
+    /* 질문게시판에 등록된 모든 글 최신순으로 정렬 조회 로직 */
+    @Transactional
+    public List<QuestionPostResponse> findAllPostsOrderByCreatedAtDesc() {
+        List<QuestionPost> questionPostList = questionPostRepository.findAllByOrderByCreatedAtDesc();
+
+        return questionPostList.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
     /* 특정 작성자가 작성한 질문 글 조회 로직 */
     @Transactional
     public List<QuestionPostResponse> findPostsByUsername(String username) {
-        List<QuestionPost> questionPosts = questionPostRepository.findAllByWriter(username);
+        List<QuestionPost> questionPosts = questionPostRepository.findAllByUserUsername(username);
 
         // 조회한 QuestionPost 엔티티 리스트를 QuestionPostResponse DTO 리스트로 변환
         return questionPosts.stream()
@@ -73,10 +81,30 @@ public class QuestionPostService {
                 .collect(Collectors.toList());
     }
 
+    /* 특정 유저가 작성한 질문 글 조회 로직 (유저 Id 사용) */
+    @Transactional
+    public List<QuestionPostResponse> findPostsByUserId(Long id) {
+        List<QuestionPost> questionPostList = questionPostRepository.findAllByUserId(id);
+
+        return questionPostList.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
+    /* 특정 유저가 작성한 질문 글 최신순 조회 로직 (유저 Id 사용) */
+    @Transactional
+    public List<QuestionPostResponse> findPostsByUserIdOrderByCreatedAtDesc(Long userId) {
+        List<QuestionPost> questionPostList = questionPostRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
+
+        return questionPostList.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+    }
+
     /* 특정 수업명을 통한 모든 질문 글 조회 로직 */
     @Transactional
     public List<QuestionPostResponse> findPostsBySubject(String subject) {
-        List<QuestionPost> questionPosts = questionPostRepository.findAllByWriter(subject);
+        List<QuestionPost> questionPosts = questionPostRepository.findAllBySubject(subject);
 
         // 조회한 QuestionPost 엔티티 리스트를 QuestionPostResponse DTO 리스트로 변환
         return questionPosts.stream()
@@ -105,28 +133,29 @@ public class QuestionPostService {
         // QuestionPostImage 리스트를 QuestionPostImageDTO 리스트로 변환
         List<QuestionPostImageDTO> imageDTOS = getQuestionPostImageDTOS(questionPost);
 
-        // Reply 리스트를 ReplyDTO 리스트로 변환
-        List<ReplyDTO> replyDTOS = getReplyDTOS(questionPost);
+        // Reply 리스트를 ReplyResponse 리스트로 변환
+        List<ReplyResponse> replyResponseList = getReplyResponseList(questionPost);
 
         // QuestionPost를 QuestionPostResponse로 변환하여 반환
         return QuestionPostResponse.builder()
                 .id(questionPost.getId())
                 .subject(questionPost.getSubject())
                 .text(questionPost.getText())
+                .username(questionPost.getUser().getUsername())
                 .writer(questionPost.getWriter())
                 .likes(questionPost.getLikes())
                 .scrapCount(questionPost.getScrapCount())
                 .replyCount(questionPost.getReplyCount())
-                .replies(replyDTOS)
+                .replies(replyResponseList)
                 .images(imageDTOS)
                 .createdAt(questionPost.getCreatedAt())
                 .modifiedAt(questionPost.getModifiedAt())
                 .build();
     }
 
-    private static List<ReplyDTO> getReplyDTOS(QuestionPost questionPost) {
+    private static List<ReplyResponse> getReplyResponseList(QuestionPost questionPost) {
         return questionPost.getReplies().stream()
-                .map(reply -> new ReplyDTO(reply.getTitle(), reply.getText()))
+                .map(reply -> new ReplyResponse(reply.getId(), reply.getText(), reply.getUsername(), reply.getWriter(), reply.getLikes(), getReplyImageDTOS(reply), reply.getCreatedAt(), reply.getModifiedAt()))
                 .collect(Collectors.toList());
     }
 
@@ -136,4 +165,9 @@ public class QuestionPostService {
                 .collect(Collectors.toList());
     }
 
+    private static List<ReplyImageDTO> getReplyImageDTOS(Reply reply) {
+        return reply.getImages().stream()
+                .map(replyImage -> new ReplyImageDTO(replyImage.getImageUrl()))
+                .collect(Collectors.toList());
+    }
 }
