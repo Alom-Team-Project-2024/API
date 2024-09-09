@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface MentorPostRepository extends JpaRepository<MentorPost, Long> {
 
-    List<MentorPost> findMentorPostsByWriter(String username);
-
     List<MentorPost> findMentorPostsByTitle(String title);
 
     List<MentorPost> findMentorPostsByCategory(Category category);
@@ -21,4 +19,6 @@ public interface MentorPostRepository extends JpaRepository<MentorPost, Long> {
     List<MentorPost> findAllByUserIdOrderByCreatedAtDesc(Long userId);
 
     List<MentorPost> findAllByCategoryOrderByCreatedAtDesc(Category category);
+
+    List<MentorPost> findAllByUserUsername(String username);
 }

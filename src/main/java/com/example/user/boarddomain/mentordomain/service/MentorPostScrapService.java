@@ -43,8 +43,7 @@ public class MentorPostScrapService {
     /* 내가 스크랩 한 구인 글 조회 로직 */
     @Transactional
     public List<MentorPostResponse> getMyScrapList(String username) {
-        User user = userRepository.findByUsername(username);
-        List<MentorPostScrap> mentorPostScrapList = mentorPostScrapRepository.findAllByUser(user);
+        List<MentorPostScrap> mentorPostScrapList = mentorPostScrapRepository.findAllByUserUsername(username);
 
         List<MentorPost> mentorPostList = mentorPostScrapList.stream()
                 .map(MentorPostScrap::getMentorPost)
@@ -76,6 +75,7 @@ public class MentorPostScrapService {
                 .category(mentorPost.getCategory())
                 .title(mentorPost.getTitle())
                 .text(mentorPost.getText())
+                .username(mentorPost.getUser().getUsername())
                 .writer(mentorPost.getWriter())
                 .major(mentorPost.getMajor())
                 .likes(mentorPost.getLikes())

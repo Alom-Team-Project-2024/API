@@ -67,7 +67,7 @@ public class MentorPostService {
     /* 구인 게시판 작성자를 통한 글 조회 로직 */
     @Transactional
     public List<MentorPostResponse> findPostsByWriter(String username) {
-        List<MentorPost> mentorPosts = mentorPostRepository.findMentorPostsByWriter(username);
+        List<MentorPost> mentorPosts = mentorPostRepository.findAllByUserUsername(username);
 
         return mentorPosts.stream()
                 .map(this::convertToMentorPostResponse)

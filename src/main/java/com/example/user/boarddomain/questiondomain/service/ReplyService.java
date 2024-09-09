@@ -30,8 +30,8 @@ public class ReplyService {
 
     /* 답변 저장 */
     @Transactional
-    public Reply saveReply(@ModelAttribute ReplyDTO replyDTO, Long post_id) {
-        QuestionPost questionPost = questionPostRepository.findById(post_id).orElseThrow(NullPointerException::new);
+    public Reply saveReply(@ModelAttribute ReplyDTO replyDTO, Long postId) {
+        QuestionPost questionPost = questionPostRepository.findById(postId).orElseThrow(NullPointerException::new);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsername(username);
 
@@ -45,7 +45,7 @@ public class ReplyService {
         Reply savedReply = replyRepository.save(reply);
 
         // replyCount 동기화
-        questionPost.synchronizedReplyCount();
+        questionPost.increaseReplyCount();
         questionPostRepository.save(questionPost);
 
         return savedReply;
