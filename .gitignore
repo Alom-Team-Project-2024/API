@@ -13,7 +13,7 @@ uploads
 src/main/resources/application.properties
 
 ### application.properties ###
-
+/src/main/resources/application.properties
 
 ### STS ###
 .apt_generated
