@@ -77,7 +77,7 @@ jobs:
               CONTAINER_NAME="alom-project-back-develop"
               PORT=8088
             fi
-            echo $PW | sudo -S docker pull ${{ secrets.DOCKERHUB_USERNAME }}/alom-project-back-container:${ BRANCH }
+            echo $PW | sudo -S docker pull ${{ secrets.DOCKERHUB_USERNAME }}/alom-project-back-container:${{ BRANCH }}
             echo $PW | sudo -S docker stop $CONTAINER_NAME || true
             echo $PW | sudo -S docker rm $CONTAINER_NAME || true
             echo $PW | sudo -S docker run -d -p ${ PORT }:8080 --name $CONTAINER_NAME \
