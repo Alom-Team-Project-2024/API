@@ -27,7 +27,6 @@ public class Reply extends ReplyBaseTimeEntity {
 
     /* 답변 본문 */
     @Lob
-    @Column(nullable = false)
     private String text;
 
     /* 답변 작성자 학번 */
