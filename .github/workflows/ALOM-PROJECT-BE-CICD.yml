@@ -69,10 +69,10 @@ jobs:
             BRANCH=${{ github.ref_name }}
             PORT=8080
             CONTAINER_NAME="alom-project-back"
-            echo $PW | sudo -S docker pull chusoek22/alom-project-back-container:latest
+            echo $PW | sudo -S docker pull ${{ secrets.DOCKERHUB_USERNAME }}/alom-project-back-container:latest
             echo $PW | sudo -S docker stop $CONTAINER_NAME || true
             echo $PW | sudo -S docker rm $CONTAINER_NAME || true
             echo $PW | sudo -S docker run -d -p ${PORT}:8080 --name $CONTAINER_NAME \
               -e TZ=Asia/Seoul \
               -v /etc/localtime:/etc/localtime:ro \
-              ${{ secrets.DOCKERHUB_USERNAME }}/alom-project-back-container:${BRANCH}
+              ${{ secrets.DOCKERHUB_USERNAME }}/alom-project-back-container:latest
