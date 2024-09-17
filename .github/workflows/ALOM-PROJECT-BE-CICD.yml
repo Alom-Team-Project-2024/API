@@ -47,7 +47,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/alom-project-back-container
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/alom-project-back-container:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/alom-project-back-container:cache
           cache-to: type=inline
 
