@@ -64,7 +64,6 @@ jobs:
           port: 22
           script: |
             export PATH=$PATH:/usr/local/bin
-            export PW=${{ secrets.SERVER_PASSWORD }}
             BRANCH=${{ github.ref_name }}
             PORT=8080
             CONTAINER_NAME="alom-project-back"
