@@ -64,8 +64,8 @@ jobs:
           port: 22
           debug: true
           script: |
-            ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key username@host
             export PATH=$PATH:/usr/local/bin
+            PW=${{ secrets.SERVER_PASSWORD }}
             PORT=8080
             CONTAINER_NAME="alom-project-back"
             echo $PW | sudo -S docker pull ${{ secrets.DOCKERHUB_USERNAME }}/alom-project-back-container:latest
